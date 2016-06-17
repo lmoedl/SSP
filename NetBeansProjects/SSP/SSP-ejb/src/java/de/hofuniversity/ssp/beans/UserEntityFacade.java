@@ -6,9 +6,11 @@
 package de.hofuniversity.ssp.beans;
 
 import de.hofuniversity.ssp.entities.CustomerEntity;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 
 /**
  *
@@ -27,6 +29,13 @@ public class UserEntityFacade extends AbstractFacade<CustomerEntity> implements 
 
     public UserEntityFacade() {
         super(CustomerEntity.class);
+    }
+    
+    public CustomerEntity findUserByEmail(String email){
+        TypedQuery<CustomerEntity> q = em.createQuery("from CUSTOMER where email='" + email + "' limit 1", CustomerEntity.class);
+        CustomerEntity entity = q.getSingleResult();
+        
+        return entity;
     }
     
 }
