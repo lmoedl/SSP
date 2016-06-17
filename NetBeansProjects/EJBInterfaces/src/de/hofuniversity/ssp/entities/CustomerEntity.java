@@ -41,6 +41,12 @@ public class CustomerEntity implements Serializable {
     private int zipCode;
     @Column(name = "city")
     private String city;
+    
+    @Column(name = "isFleaMarket")
+    private boolean isFleaMarket;
+    
+    @Column(name = "isLicencePlate")
+    private boolean isLicencePlate;
 
     public long getId() {
         return id;
@@ -48,6 +54,22 @@ public class CustomerEntity implements Serializable {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public boolean isIsFleaMarket() {
+        return isFleaMarket;
+    }
+
+    public void setIsFleaMarket(boolean isFleaMarket) {
+        this.isFleaMarket = isFleaMarket;
+    }
+
+    public boolean isIsLicencePlate() {
+        return isLicencePlate;
+    }
+
+    public void setIsLicencePlate(boolean isLicencePlate) {
+        this.isLicencePlate = isLicencePlate;
     }
     
     
