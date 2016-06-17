@@ -52,7 +52,8 @@ public class UserBean implements Serializable{
         
         userEntityFacade.create(entity);
         
-        return "citizenPortal.xhtml";
+        return "/citizenPortal.xhtml";
+        //?faces-redirect=true
         
     }
 
