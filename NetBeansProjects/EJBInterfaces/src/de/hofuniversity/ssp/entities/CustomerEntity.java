@@ -47,6 +47,19 @@ public class CustomerEntity implements Serializable {
     
     @Column(name = "isLicencePlate")
     private boolean isLicencePlate;
+    
+    @Column(name = "userRole")
+    private String userRole;
+
+    public String getUserRole() {
+        return userRole;
+    }
+
+    public void setUserRole(String userRole) {
+        this.userRole = userRole;
+    }
+    
+    
 
     public long getId() {
         return id;
