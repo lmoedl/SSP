@@ -10,13 +10,18 @@
     <h:body>
         <p:menubar>
             <p:menuitem value="Home" outcome="/index" icon="fa fa-home"/>
-            <p:menuitem value="Kennzeichen" outcome="/citizenPortal" icon="fa fa-car"/>
+            <p:menuitem value="Kennzeichen" outcome="/licencePlate" icon="fa fa-car"/>
             <p:menuitem value="Fohmarkt" outcome="/fleaMarket" icon="fa fa-medium"/>
             <p:menuitem value="Login" outcome="/login" icon="fa fa-lock"/>
+            <p:submenu label="Admin" icon="ui-icon-contact" rendered="#{indexBean.loggedIn}">
+                <p:menuitem value="Kennzeichenreservierung" url="/licencePlateReservation"/>
+                <p:menuitem value="Standreservierung" url="/fleaMarketReservation" />
+                <p:menuitem value="Benutzerverwaltung" url="/userAdministration"/>
+            </p:submenu>
         </p:menubar>
 
-        <p:button value="Kennzeichen" outcome="/citizenPortal"/>
-        <p:button value="Flohmarkt" outcome="/fleaMarket"/>
+        <p:button value="Kennzeichen" outcome="/licencePlate.xhtml"/>
+        <p:button value="Flohmarkt" outcome="/fleaMarket.xhtml"/>
         
         <p:calendar />        
         <p:clock />

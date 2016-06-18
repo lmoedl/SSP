@@ -34,7 +34,7 @@ public class LoginBean implements Serializable {
         
     }
     
-    public String submit(){
+    public String login(){
         
         CustomerEntity entity = userEntityFacade.find(email);
         

@@ -5,6 +5,8 @@
  */
 package de.hofuniversity.ssp;
 
+import de.hofuniversity.ssp.entities.CustomerEntity;
+import de.hofuniversity.ssp.interfaces.LoggedIn;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
@@ -20,6 +22,18 @@ public class LicencePlateBean implements Serializable {
     private String city;
     private String letters;
     private int numbers;
+    
+    private @LoggedIn CustomerEntity customer;
+
+    public CustomerEntity getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(CustomerEntity customer) {
+        this.customer = customer;
+    }
+    
+    
 
     public String getCity() {
         return city;

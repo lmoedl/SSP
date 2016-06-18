@@ -9,10 +9,15 @@
     </h:head>
     <h:body>
         <p:menubar>
-            <p:menuitem value="Home" outcome="/index.xhtml" icon="fa fa-home"/>
+            <p:menuitem value="Home" outcome="/index" icon="fa fa-home"/>
+            <p:menuitem value="Kennzeichen" outcome="/licencePlate" icon="fa fa-car"/>
+            <p:menuitem value="Fohmarkt" outcome="/fleaMarket" icon="fa fa-medium"/>
             <p:menuitem value="Login" outcome="/login" icon="fa fa-lock"/>
-            <p:menuitem value="Bürgerportal" outcome="/citizenPortal" icon="fa fa-car"/>
-            <p:menuitem value="Registrieren" outcome="/register" icon="fa fa-medium"/>
+            <p:submenu label="Admin" icon="ui-icon-contact" rendered="#{indexBean.loggedIn}">
+                <p:menuitem value="Kennzeichenreservierung" url="/licencePlateReservation"/>
+                <p:menuitem value="Standreservierung" url="/fleaMarketReservation" />
+                <p:menuitem value="Benutzerverwaltung" url="/userAdministration"/>
+            </p:submenu>
         </p:menubar>
         <p:outputLabel value="Login"/>
         <f:view>
@@ -23,6 +28,9 @@
                 <p:password id="password" value="#{loginBean.password}" placeholder="Passwort eingeben"/>
                 <p:commandButton value="Login" action="#{loginBean.login()}" rendered="#{!loginBean.loggedIn}" ajax="false"/>
                 <p:commandButton value="Logout" action="#{loginBean.logout()}" rendered="#{loginBean.loggedIn}" ajax="false"/>
+                
+                
+                <p:button value="Registrieren" outcome="/register.xhtml"/>
 
             </h:form>
         </f:view>

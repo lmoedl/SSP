@@ -7,6 +7,7 @@ package de.hofuniversity.ssp;
 
 import de.hofuniversity.ssp.beans.UserEntityFacadeRemote;
 import de.hofuniversity.ssp.entities.CustomerEntity;
+import de.hofuniversity.ssp.enums.Role;
 import java.io.Serializable;
 import javax.ejb.EJB;
 import javax.inject.Named;
@@ -49,6 +50,9 @@ public class UserBean implements Serializable{
         entity.setPrename(prename);
         entity.setStreetAddress(streetAddress);
         entity.setZipCode(zipCode);
+        entity.setIsFleaMarket(true);
+        entity.setIsLicencePlate(true);
+        entity.setUserRole(Role.USER.toString());
         
         userEntityFacade.create(entity);
         
