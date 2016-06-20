@@ -8,19 +8,87 @@
         <title>Facelet Title</title>
     </h:head>
     <h:body>
-        <p:menubar>
+        <nav>
+       <p:menubar>
             <p:menuitem value="Home" outcome="/index" icon="fa fa-home"/>
             <p:menuitem value="Kennzeichen" outcome="/licencePlate" icon="fa fa-car"/>
             <p:menuitem value="Fohmarkt" outcome="/fleaMarket" icon="fa fa-medium"/>
             <p:menuitem value="Login" outcome="/login" icon="fa fa-lock"/>
-            <p:submenu label="Admin" icon="ui-icon-contact" rendered="#{indexBean.loggedIn}">
-                <p:menuitem value="Kennzeichenreservierung" url="/licencePlateReservation"/>
-                <p:menuitem value="Standreservierung" url="/fleaMarketReservation" />
-                <p:menuitem value="Benutzerverwaltung" url="/userAdministration"/>
+            <p:submenu label="Admin" icon="fa fa-adn" rendered="#{loginBean.admin}">
+                <p:menuitem value="Kennzeichenreservierung" outcome="/licencePlateReservation"/>
+                <p:menuitem value="Standreservierung" outcome="/fleaMarketReservation" />
+                <p:menuitem value="Benutzerverwaltung" outcome="/userAdministration"/>
             </p:submenu>
         </p:menubar>
+        </nav>
         
-        Hello from Facelets
+        <main>
+            <f:view>
+
+
+                <h:form>
+                    <h1><h:outputText value="List"/></h1>
+                    <p:dataTable value="#{userAdministrationBean.users}" var="item">
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="UserRole"/>
+                            </f:facet>
+                            <h:outputText value="#{item.userRole}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="Id"/>
+                            </f:facet>
+                            <h:outputText value="#{item.id}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="Email"/>
+                            </f:facet>
+                            <h:outputText value="#{item.email}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="Name"/>
+                            </f:facet>
+                            <h:outputText value="#{item.name}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="Prename"/>
+                            </f:facet>
+                            <h:outputText value="#{item.prename}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="Password"/>
+                            </f:facet>
+                            <h:outputText value="#{item.password}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="StreetAddress"/>
+                            </f:facet>
+                            <h:outputText value="#{item.streetAddress}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="ZipCode"/>
+                            </f:facet>
+                            <h:outputText value="#{item.zipCode}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="City"/>
+                            </f:facet>
+                            <h:outputText value="#{item.city}"/>
+                        </p:column>
+                    </p:dataTable>
+                </h:form>
+            </f:view>
+
+        </main>
+        
     </h:body>
 </html>
 

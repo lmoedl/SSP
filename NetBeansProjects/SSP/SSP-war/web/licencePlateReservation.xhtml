@@ -8,19 +8,75 @@
         <title>Facelet Title</title>
     </h:head>
     <h:body>
-        <p:menubar>
-            <p:menuitem value="Home" outcome="/index" icon="fa fa-home"/>
-            <p:menuitem value="Kennzeichen" outcome="/licencePlate" icon="fa fa-car"/>
-            <p:menuitem value="Fohmarkt" outcome="/fleaMarket" icon="fa fa-medium"/>
-            <p:menuitem value="Login" outcome="/login" icon="fa fa-lock"/>
-            <p:submenu label="Admin" icon="ui-icon-contact" rendered="#{indexBean.loggedIn}">
-                <p:menuitem value="Kennzeichenreservierung" url="/licencePlateReservation"/>
-                <p:menuitem value="Standreservierung" url="/fleaMarketReservation" />
-                <p:menuitem value="Benutzerverwaltung" url="/userAdministration"/>
-            </p:submenu>
-        </p:menubar>
-        
-        Hello from Facelets
+        <nav>
+            <p:menubar>
+                <p:menuitem value="Home" outcome="/index" icon="fa fa-home"/>
+                <p:menuitem value="Kennzeichen" outcome="/licencePlate" icon="fa fa-car"/>
+                <p:menuitem value="Fohmarkt" outcome="/fleaMarket" icon="fa fa-medium"/>
+                <p:menuitem value="Login" outcome="/login" icon="fa fa-lock"/>
+                <p:submenu label="Admin" icon="fa fa-adn" rendered="#{loginBean.admin}">
+                    <p:menuitem value="Kennzeichenreservierung" outcome="/licencePlateReservation"/>
+                    <p:menuitem value="Standreservierung" outcome="/fleaMarketReservation" />
+                    <p:menuitem value="Benutzerverwaltung" outcome="/userAdministration"/>
+                </p:submenu>
+            </p:menubar>
+        </nav>
+
+        <main>
+           
+            <f:view>
+
+
+                <h:form>
+                    <h1><h:outputText value="List"/></h1>
+                    <p:dataTable value="#{licencePlateReservationBean.licencePlates}" var="item">
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="ReservationDate"/>
+                            </f:facet>
+                            <h:outputText value="#{item.reservationDate}">
+                                <f:convertDateTime pattern="MM/dd/yyyy" />
+                            </h:outputText>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="Customer_id"/>
+                            </f:facet>
+                            <h:outputText value="#{item.customer_id}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="City"/>
+                            </f:facet>
+                            <h:outputText value="#{item.city}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="Letters"/>
+                            </f:facet>
+                            <h:outputText value="#{item.letters}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="Numbers"/>
+                            </f:facet>
+                            <h:outputText value="#{item.numbers}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="Id"/>
+                            </f:facet>
+                            <h:outputText value="#{item.id}"/>
+                        </p:column>
+                    </p:dataTable>
+                </h:form>
+            </f:view>
+
+
+
+        </main>
+
+
     </h:body>
 </html>
 

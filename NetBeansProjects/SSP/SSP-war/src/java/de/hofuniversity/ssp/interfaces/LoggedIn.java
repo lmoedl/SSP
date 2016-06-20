@@ -5,6 +5,7 @@
  */
 package de.hofuniversity.ssp.interfaces;
 
+import de.hofuniversity.ssp.entities.CustomerEntity;
 import static java.lang.annotation.ElementType.FIELD;
 import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.ElementType.TYPE;
@@ -12,6 +13,8 @@ import java.lang.annotation.Retention;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 import java.lang.annotation.Target;
 import javax.xml.ws.BindingType;
+
+
 
 
 /**
@@ -22,5 +25,5 @@ import javax.xml.ws.BindingType;
 @Target({TYPE, METHOD, FIELD})
 @BindingType
 public @interface LoggedIn {
-    
+   
 }

@@ -6,9 +6,14 @@
 package de.hofuniversity.ssp.beans;
 
 import de.hofuniversity.ssp.entities.FleaMarketEntity;
+import de.hofuniversity.ssp.entities.LicencePlateEntity;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 
 /**
  *
@@ -27,6 +32,39 @@ public class FleaMarketEntityFacade extends AbstractFacade<FleaMarketEntity> imp
 
     public FleaMarketEntityFacade() {
         super(FleaMarketEntity.class);
+    }
+    
+    @Override
+    public List<FleaMarketEntity> getReservedFleaMarketsOfCustomer(long customer_id){
+        CriteriaBuilder builder =  getEntityManager().getCriteriaBuilder();
+        CriteriaQuery cq = builder.createQuery();
+        Root<FleaMarketEntity> c = cq.from(FleaMarketEntity.class);
+        cq.select(c);
+        cq.where(builder.equal(c.get("customer_id"), customer_id));
+        
+        System.out.println("customer_id" + customer_id);
+        
+        return (List<FleaMarketEntity>) getEntityManager().createQuery(cq).getResultList();
+    }
+    
+    public boolean isFleaMarketFree(String street, int length, int streetLength){
+        CriteriaBuilder builder =  getEntityManager().getCriteriaBuilder();
+        CriteriaQuery cq = builder.createQuery();
+        Root<FleaMarketEntity> c = cq.from(FleaMarketEntity.class);
+        cq.select(c);
+        cq.where(builder.equal(c.get("street"), street));
+        
+        List<FleaMarketEntity> list = getEntityManager().createQuery(cq).getResultList();
+        
+        int resultLength = 0;
+        
+        for (int i = 0; i < list.size(); i++) {
+            FleaMarketEntity entity = list.get(i);
+            resultLength += entity.getStandLength();
+            
+        }
+        
+        return streetLength > resultLength + length;
     }
     
 }

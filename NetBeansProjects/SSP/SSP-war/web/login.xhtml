@@ -13,19 +13,19 @@
             <p:menuitem value="Kennzeichen" outcome="/licencePlate" icon="fa fa-car"/>
             <p:menuitem value="Fohmarkt" outcome="/fleaMarket" icon="fa fa-medium"/>
             <p:menuitem value="Login" outcome="/login" icon="fa fa-lock"/>
-            <p:submenu label="Admin" icon="ui-icon-contact" rendered="#{indexBean.loggedIn}">
-                <p:menuitem value="Kennzeichenreservierung" url="/licencePlateReservation"/>
-                <p:menuitem value="Standreservierung" url="/fleaMarketReservation" />
-                <p:menuitem value="Benutzerverwaltung" url="/userAdministration"/>
+            <p:submenu label="Admin" icon="fa fa-adn" rendered="#{loginBean.admin}">
+                <p:menuitem value="Kennzeichenreservierung" outcome="/licencePlateReservation"/>
+                <p:menuitem value="Standreservierung" outcome="/fleaMarketReservation" />
+                <p:menuitem value="Benutzerverwaltung" outcome="/userAdministration"/>
             </p:submenu>
         </p:menubar>
-        <p:outputLabel value="Login"/>
+
         <f:view>
             <h:form>
                 <p:outputLabel for="email">Email</p:outputLabel>
-                <p:inputText id="email" value="#{loginBean.email}" placeholder="Email Adresse eingeben"/>
+                <p:inputText id="email" value="#{loginBean.email}" placeholder="Email Adresse eingeben" required="true"/>
                 <p:outputLabel for="password">Passwort</p:outputLabel>
-                <p:password id="password" value="#{loginBean.password}" placeholder="Passwort eingeben"/>
+                <p:password id="password" value="#{loginBean.password}" placeholder="Passwort eingeben" required="true"/>
                 <p:commandButton value="Login" action="#{loginBean.login()}" rendered="#{!loginBean.loggedIn}" ajax="false"/>
                 <p:commandButton value="Logout" action="#{loginBean.logout()}" rendered="#{loginBean.loggedIn}" ajax="false"/>
                 

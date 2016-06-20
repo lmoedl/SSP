@@ -8,19 +8,78 @@
         <title>Flohmarkt</title>
     </h:head>
     <h:body>
-        <p:menubar>
-            <p:menuitem value="Home" outcome="/index" icon="fa fa-home"/>
-            <p:menuitem value="Kennzeichen" outcome="/licencePlate" icon="fa fa-car"/>
-            <p:menuitem value="Fohmarkt" outcome="/fleaMarket" icon="fa fa-medium"/>
-            <p:menuitem value="Login" outcome="/login" icon="fa fa-lock"/>
-            <p:submenu label="Admin" icon="ui-icon-contact" rendered="#{indexBean.loggedIn}">
-                <p:menuitem value="Kennzeichenreservierung" url="/licencePlateReservation"/>
-                <p:menuitem value="Standreservierung" url="/fleaMarketReservation" />
-                <p:menuitem value="Benutzerverwaltung" url="/userAdministration"/>
-            </p:submenu>
-        </p:menubar>
-        
-        Hello from Facelets
+        <nav>
+            <p:menubar>
+                <p:menuitem value="Home" outcome="/index" icon="fa fa-home"/>
+                <p:menuitem value="Kennzeichen" outcome="/licencePlate" icon="fa fa-car"/>
+                <p:menuitem value="Fohmarkt" outcome="/fleaMarket" icon="fa fa-medium"/>
+                <p:menuitem value="Login" outcome="/login" icon="fa fa-lock"/>
+                <p:submenu label="Admin" icon="fa fa-adn" rendered="#{loginBean.admin}">
+                    <p:menuitem value="Kennzeichenreservierung" outcome="/licencePlateReservation"/>
+                    <p:menuitem value="Standreservierung" outcome="/fleaMarketReservation" />
+                    <p:menuitem value="Benutzerverwaltung" outcome="/userAdministration"/>
+                </p:submenu>
+            </p:menubar>
+        </nav>
+
+        <main>
+            <h:form>
+                <p:growl id="growl" showDetail="true" sticky="true"/>
+                <p:panel>
+                    <p:messages autoUpdate="true"/>
+                    <h:panelGrid id="grid" columns="4" cellpadding="5">
+                        <p:outputLabel for="street" value="Straße"/>
+                        <p:selectOneMenu id="street" value="#{fleaMarketBean.street}">
+                            <f:selectItem itemLabel="Enoch-Widman-Straße" itemValue="Enoch-Widman-Straße" />
+                            <f:selectItem itemLabel="Dr. Bonnhoefer Straße" itemValue="Dr. Bonnhoefer Straße" />
+                        </p:selectOneMenu>
+                        <p:outputLabel for="length" value="Länge"/>
+                        <p:selectOneMenu id="length" value="#{fleaMarketBean.length}">
+                            <f:selectItem itemLabel="1 m" itemValue="1" />
+                            <f:selectItem itemLabel="2 m" itemValue="2" />
+                            <f:selectItem itemLabel="3 m" itemValue="3" />
+                            <f:selectItem itemLabel="4 m" itemValue="4" />
+                            <f:selectItem itemLabel="5 m" itemValue="5" />
+                        </p:selectOneMenu>
+                    </h:panelGrid>
+                    <p:commandButton value="Reservieren" action="#{fleaMarketBean.reserve()}"/>
+                </p:panel>
+            </h:form>
+
+
+            <f:view>
+
+
+                <h:form rendered="#{loginBean.loggedIn}">
+                    <h1><h:outputText value="Ihre reservierten Flohmarktstände"/></h1>
+                    <p:dataTable value="#{fleaMarketBean.fleaMarkets}" var="item">
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="Street"/>
+                            </f:facet>
+                            <h:outputText value="#{item.street}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="StandLength"/>
+                            </f:facet>
+                            <h:outputText value="#{item.standLength}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="Id"/>
+                            </f:facet>
+                            <h:outputText value="#{item.id}"/>
+                        </p:column>
+                    </p:dataTable>
+                </h:form>
+            </f:view>
+
+
+
+        </main>
+
+
     </h:body>
 </html>
 

@@ -13,33 +13,84 @@
             <p:menuitem value="Kennzeichen" outcome="/licencePlate" icon="fa fa-car"/>
             <p:menuitem value="Fohmarkt" outcome="/fleaMarket" icon="fa fa-medium"/>
             <p:menuitem value="Login" outcome="/login" icon="fa fa-lock"/>
-            <p:submenu label="Admin" icon="ui-icon-contact" rendered="#{indexBean.loggedIn}">
-                <p:menuitem value="Kennzeichenreservierung" url="/licencePlateReservation"/>
-                <p:menuitem value="Standreservierung" url="/fleaMarketReservation" />
-                <p:menuitem value="Benutzerverwaltung" url="/userAdministration"/>
+            <p:submenu label="Admin" icon="fa fa-adn" rendered="#{loginBean.admin}">
+                <p:menuitem icon="fa fa-rub" value="Kennzeichenreservierung" outcome="/licencePlateReservation"/>
+                <p:menuitem icon="fa fa-map-marker" value="Standreservierung" outcome="/fleaMarketReservation" />
+                <p:menuitem icon="fa fa-user" value="Benutzerverwaltung" outcome="/userAdministration"/>
             </p:submenu>
         </p:menubar>
 
-        <f:view>
             <h:form>
-
-                <p:outputLabel for="city"> Stadt: </p:outputLabel>
-                <p:selectOneMenu id="city" value="#{licensePlateBean.selectedCity}">
-                    <f:selectItem itemLabel="HO" itemValue="HO" />
-                    <f:selectItem itemLabel="WUN" itemValue="WUN" />
-                    <f:selectItem itemLabel="REH" itemValue="REH" />
-                    <f:selectItem itemLabel="SEL" itemValue="SEL" />
-                    <f:selectItem itemLabel="NAI" itemValue="NAI" />
-                </p:selectOneMenu>
-                <p:outputLabel for="letters"> Buchstaben: </p:outputLabel>
-                <p:inputText id="letters" value="#{licensePlateBean.letters}" placeholder="Buchstaben eingeben"/>
-                <p:outputLabel for="numbers"> Zahlen: </p:outputLabel>
-                <p:inputText id="numbers" value="#{licensePlateBean.numbers}" />
-                <p:outputLabel value="#{licencePlateBean.customer.email}"/>
-                <p:outputLabel value="#{licencePlateBean.customer.password}"/>
-
+                <p:growl id="growl" showDetail="true" sticky="true"/>
+                <p:panel>
+                    <p:messages autoUpdate="true"/>
+                    <h:panelGrid id="grid" columns="4" cellpadding="5">
+                        
+                        <p:selectOneMenu id="city" value="#{licencePlateBean.city}">
+                            <f:selectItem itemLabel="HO" itemValue="HO" />
+                            <f:selectItem itemLabel="WUN" itemValue="WUN" />
+                            <f:selectItem itemLabel="REH" itemValue="REH" />
+                            <f:selectItem itemLabel="SEL" itemValue="SEL" />
+                            <f:selectItem itemLabel="NAI" itemValue="NAI" />
+                        </p:selectOneMenu>
+                        
+                        <p:inputText id="letters" value="#{licencePlateBean.letters}" placeholder="Buchstaben eingeben" required="true" maxlength="2"/>
+                        <p:message for="letters"/>
+                       
+                        <p:inputText id="numbers" value="#{licencePlateBean.numbers}" placeholder="Zahlen eingeben" required="true" maxlength="4">
+                            <f:validateDoubleRange minimum="1" maximum="9999"/>
+                        </p:inputText>
+                        <p:message for="numbers"/>
+                    </h:panelGrid>
+                    <p:commandButton value="Überprüfen" action="#{licencePlateBean.isLicencePlateExist()}" ajax="false" update="growl"/>
+                    <p:commandButton value="Reservieren" action="#{licencePlateBean.reserveLicencePlate()}" rendered="#{loginBean.loggedIn}" ajax="false" update="growl"/>
+                </p:panel>
             </h:form>
-        </f:view>
+        
+            <f:view>
+
+
+                <h:form rendered="#{loginBean.loggedIn}">
+                    <h1><h:outputText value="Ihre reservierten Kennzeichen"/></h1>
+                    <p:dataTable value="#{licencePlateBean.licencePlates}" var="item">
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="Reservierungsdatum"/>
+                            </f:facet>
+                            <h:outputText value="#{item.reservationDate}">
+                                <f:convertDateTime pattern="dd.MM.yyyy" />
+                            </h:outputText>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="Customer_id"/>
+                            </f:facet>
+                            <h:outputText value="#{item.customer_id}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="Stadt"/>
+                            </f:facet>
+                            <h:outputText value="#{item.city}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="Buchstaben"/>
+                            </f:facet>
+                            <h:outputText value="#{item.letters}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="Zahlen"/>
+                            </f:facet>
+                            <h:outputText value="#{item.numbers}"/>
+                        </p:column>
+                    </p:dataTable>
+                </h:form>
+            </f:view>
+
+
+        
     </h:body>
 </html>
 

@@ -10,7 +10,12 @@ import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Expression;
+import javax.persistence.criteria.Root;
 
 /**
  *
@@ -31,11 +36,16 @@ public class UserEntityFacade extends AbstractFacade<CustomerEntity> implements 
         super(CustomerEntity.class);
     }
     
+    @Override
     public CustomerEntity findUserByEmail(String email){
-        TypedQuery<CustomerEntity> q = em.createQuery("from CUSTOMER where email='" + email + "' limit 1", CustomerEntity.class);
-        CustomerEntity entity = q.getSingleResult();
+        CriteriaBuilder builder =  getEntityManager().getCriteriaBuilder();
+        CriteriaQuery cq = builder.createQuery();
+        Root<CustomerEntity> c = cq.from(CustomerEntity.class);
+        cq.select(c);
+        cq.where(builder.equal(c.get("email"), email));
         
-        return entity;
+
+        return (CustomerEntity) getEntityManager().createQuery(cq).getResultList().get(0);
     }
     
 }
