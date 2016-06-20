@@ -30,4 +30,6 @@ public interface UserEntityFacadeRemote {
 
     int count();
     
+    CustomerEntity findUserByEmail(String email);
+    
 }

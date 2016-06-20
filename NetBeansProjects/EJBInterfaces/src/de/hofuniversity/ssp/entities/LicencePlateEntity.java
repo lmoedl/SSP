@@ -6,18 +6,21 @@
 package de.hofuniversity.ssp.entities;
 
 import java.io.Serializable;
+import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 /**
  *
  * @author lothar
  */
-@Entity
-public class LicencePlate implements Serializable {
+@Entity(name = "licencePlate")
+public class LicencePlateEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -30,6 +33,31 @@ public class LicencePlate implements Serializable {
     private String letters;
     @Column(name = "numbers")
     private int numbers;
+    @Column(name = "customer_id")
+    private long customer_id;
+    @Column(name = "reservationDate")
+    @Temporal(TemporalType.DATE)
+    private Date reservationDate;
+
+    public Date getReservationDate() {
+        return reservationDate;
+    }
+
+    public void setReservationDate(Date reservationDate) {
+        this.reservationDate = reservationDate;
+    }
+    
+    
+
+    public long getCustomer_id() {
+        return customer_id;
+    }
+
+    public void setCustomer_id(long customer_id) {
+        this.customer_id = customer_id;
+    }
+    
+    
 
     public String getCity() {
         return city;
@@ -75,10 +103,10 @@ public class LicencePlate implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof LicencePlate)) {
+        if (!(object instanceof LicencePlateEntity)) {
             return false;
         }
-        LicencePlate other = (LicencePlate) object;
+        LicencePlateEntity other = (LicencePlateEntity) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }

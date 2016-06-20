@@ -5,7 +5,7 @@
  */
 package de.hofuniversity.ssp.beans;
 
-import de.hofuniversity.ssp.entities.LicencePlate;
+import de.hofuniversity.ssp.entities.LicencePlateEntity;
 import java.util.List;
 import javax.ejb.Remote;
 
@@ -16,18 +16,22 @@ import javax.ejb.Remote;
 @Remote
 public interface LicencePlateFacadeRemote {
 
-    void create(LicencePlate licencePlate);
+    void create(LicencePlateEntity licencePlate);
 
-    void edit(LicencePlate licencePlate);
+    void edit(LicencePlateEntity licencePlate);
 
-    void remove(LicencePlate licencePlate);
+    void remove(LicencePlateEntity licencePlate);
 
-    LicencePlate find(Object id);
+    LicencePlateEntity find(Object id);
 
-    List<LicencePlate> findAll();
+    List<LicencePlateEntity> findAll();
 
-    List<LicencePlate> findRange(int[] range);
+    List<LicencePlateEntity> findRange(int[] range);
 
     int count();
+    
+    boolean isLicencePlateExist(String city, String letters, int numbers);
+    
+    List<LicencePlateEntity> getReservedLicencePlatesOfCustomer(long customer_id);
     
 }

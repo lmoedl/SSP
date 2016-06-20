@@ -30,4 +30,6 @@ public interface FleaMarketEntityFacadeRemote {
 
     int count();
     
+    List<FleaMarketEntity> getReservedFleaMarketsOfCustomer(long customer_id);
+    
 }

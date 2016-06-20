@@ -16,7 +16,7 @@ import javax.persistence.Id;
  *
  * @author lothar
  */
-@Entity
+@Entity(name = "fleaMarket")
 public class FleaMarketEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
