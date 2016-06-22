@@ -11,17 +11,17 @@
         <nav>
             <h:form>
                 <p:menubar>
-                    <p:menuitem value="Home" outcome="/index" icon="fa fa-home"/>
-                    <p:menuitem value="Kennzeichen" outcome="/licencePlate" icon="fa fa-car"/>
-                    <p:menuitem value="Flohmarkt" outcome="/fleaMarket" icon="fa fa-medium"/>
-                    <p:submenu label="Admin" icon="fa fa-adn" rendered="#{loginBean.admin}">
+                    <p:menuitem value="Home" outcome="/index" icon="fa fa-fw fa-home"/>
+                    <p:menuitem value="Kennzeichen" outcome="/licencePlate" icon="fa fa-fw fa-car"/>
+                    <p:menuitem value="Flohmarkt" outcome="/fleaMarket" icon="fa fa-fw fa-medium"/>
+                    <p:submenu label="Admin" icon="fa fa-fw fa-adn" rendered="#{loginBean.admin}">
                         <p:menuitem value="Kennzeichenreservierung" outcome="/licencePlateReservation"/>
                         <p:menuitem value="Standreservierung" outcome="/fleaMarketReservation" />
                         <p:menuitem value="Benutzerverwaltung" outcome="/userAdministration"/>
                     </p:submenu>
-                    <p:menuitem><p:clock /></p:menuitem>
-                    <p:menuitem value="Login"  outcome="/login" icon="fa fa-lock" style="position: absolute; right: 10px" rendered="#{!loginBean.loggedIn}"/>
-                    <p:menuitem value="Logout" icon="fa fa-lock" style="position: absolute; right: 10px" actionListener="#{loginBean.logout()}" rendered="#{loginBean.loggedIn}" ajax="false"/>
+
+                    <p:menuitem value="Login"  outcome="/login" icon="fa fa-fw fa-lock" style="position: absolute; right: 10px" rendered="#{!loginBean.loggedIn}"/>
+                    <p:menuitem value="Logout" icon="fa fa-fw fa-lock" style="position: absolute; right: 10px" actionListener="#{loginBean.logout()}" rendered="#{loginBean.loggedIn}" ajax="false"/>
                 </p:menubar>
             </h:form>
         </nav>
@@ -29,16 +29,20 @@
         <main>
             <f:view>
                 <h:form>
+                    <p:panel>
+                        <h:panelGrid id="grid" columns="2" cellpadding="5">
                     <p:outputLabel for="email">Email</p:outputLabel>
                     <p:inputText id="email" value="#{loginBean.email}" placeholder="Email Adresse eingeben" required="true" rendered="#{!loginBean.loggedIn}"/>
                     <p:outputLabel for="password">Passwort</p:outputLabel>
                     <p:password id="password" value="#{loginBean.password}" placeholder="Passwort eingeben" required="true" rendered="#{!loginBean.loggedIn}"/>
+                    
                     <p:commandButton value="Login" action="#{loginBean.login()}" rendered="#{!loginBean.loggedIn}" ajax="false"/>
                     <p:commandButton value="Logout" action="#{loginBean.logout()}" rendered="#{loginBean.loggedIn}" ajax="false"/>
 
-
+                        
                     <p:button value="Registrieren" outcome="/register.xhtml"/>
-
+                    </h:panelGrid>
+                    </p:panel>
                 </h:form>
             </f:view>
         </main>

@@ -27,6 +27,25 @@ and open the template in the editor.
 .clock{
     padding: 0px;
     margin: 0px;
-    background-color: red;
-    border-color: red;
+    background-color: transparent;
+
+}
+
+.topAligned {
+   position: absolute;
+    height: 100px;
+    top: 0;
+    bottom: 0;
+    margin:auto;
+    align-self: center;
+    display: block;
+    margin-left: 3.5em;
+}
+
+.centeredMenuBar.ui-menubar {
+    text-align: center;
+}
+
+.centeredMenuBar .ui-menu-list {
+    display: inline-block;
 }

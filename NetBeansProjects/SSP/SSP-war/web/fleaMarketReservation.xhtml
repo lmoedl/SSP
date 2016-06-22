@@ -5,25 +5,26 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:p="http://primefaces.org/ui">
     <h:head>
+        <h:outputStylesheet library="css" name="style.css"/>
         <title>Facelet Title</title>
     </h:head>
     <h:body>
         <nav>
         <h:form>
-            <p:menubar>
-                <p:menuitem value="Home" outcome="/index" icon="fa fa-home"/>
-                <p:menuitem value="Kennzeichen" outcome="/licencePlate" icon="fa fa-car"/>
-                <p:menuitem value="Flohmarkt" outcome="/fleaMarket" icon="fa fa-medium"/>
-                <p:submenu label="Admin" icon="fa fa-adn" rendered="#{loginBean.admin}">
-                    <p:menuitem value="Kennzeichenreservierung" outcome="/licencePlateReservation"/>
-                    <p:menuitem value="Standreservierung" outcome="/fleaMarketReservation" />
-                    <p:menuitem value="Benutzerverwaltung" outcome="/userAdministration"/>
-                </p:submenu>
-                <p:menuitem><p:clock /></p:menuitem>
-                <p:menuitem value="Login"  outcome="/login" icon="fa fa-lock" style="position: absolute; right: 10px" rendered="#{!loginBean.loggedIn}"/>
-                <p:menuitem value="Logout" icon="fa fa-lock" style="position: absolute; right: 10px" actionListener="#{loginBean.logout()}" rendered="#{loginBean.loggedIn}" ajax="false"/>
-            </p:menubar>
-        </h:form>
+                <p:menubar>
+                    <p:menuitem value="Home" outcome="/index" icon="fa fa-fw fa-home"/>
+                    <p:menuitem value="Kennzeichen" outcome="/licencePlate" icon="fa fa-fw fa-car"/>
+                    <p:menuitem value="Flohmarkt" outcome="/fleaMarket" icon="fa fa-fw fa-medium"/>
+                    <p:submenu label="Admin" icon="fa fa-fw fa-adn" rendered="#{loginBean.admin}">
+                        <p:menuitem value="Kennzeichenreservierung" outcome="/licencePlateReservation"/>
+                        <p:menuitem value="Standreservierung" outcome="/fleaMarketReservation" />
+                        <p:menuitem value="Benutzerverwaltung" outcome="/userAdministration"/>
+                    </p:submenu>
+
+                    <p:menuitem value="Login"  outcome="/login" icon="fa fa-fw fa-lock" style="position: absolute; right: 10px" rendered="#{!loginBean.loggedIn}"/>
+                    <p:menuitem value="Logout" icon="fa fa-fw fa-lock" style="position: absolute; right: 10px" actionListener="#{loginBean.logout()}" rendered="#{loginBean.loggedIn}" ajax="false"/>
+                </p:menubar>
+            </h:form>
         </nav>
         
         <main>
@@ -39,7 +40,7 @@
                                 <h:outputText value="Reservierungsdatum"/>
                             </f:facet>
                             <h:outputText value="#{item.reservationDate}">
-                                <f:convertDateTime pattern="dd.MM.yyyy" />
+                                <f:convertDateTime pattern="dd.MM.yyyy" timeZone="MET"/>
                             </h:outputText>
                         </p:column>
                         <p:column>
@@ -50,21 +51,22 @@
                         </p:column>
                         <p:column>
                             <f:facet name="header">
-                                <h:outputText value="Standlänge"/>
+                                <h:outputText value="Standlänge (Meter)"/>
                             </f:facet>
                             <h:outputText value="#{item.standLength}"/>
                         </p:column>
                         <p:column>
                             <f:facet name="header">
-                                <h:outputText value="Löschen"/>
+                                <h:outputText value=""/>
                             </f:facet>
-                            <p:commandButton value="Löschen" action="#{fleaMarketReservationBean.deleteFleaMarketReservation(item)}" ajax="false" class="tableButton"/>
+                            <p:commandButton value="Löschen" action="#{fleaMarketReservationBean.deleteFleaMarketReservation(item)}" ajax="false" style="margin: auto;
+                                             display: block;"/>
                         </p:column>
                     </p:dataTable>
-                    
+                    <p:commandButton action="#{fleaMarketReservationBean.deleteExpiredReservations()}" value="Ablgelaufene löschen" style="margin-top: 10px"/>
                 </h:form>
             </f:view>
-            <p:commandButton action="#{fleaMarketReservationBean.deleteExpiredReservations()}" value="Ablgelaufene löschen"/>
+            
             
         </main>
         

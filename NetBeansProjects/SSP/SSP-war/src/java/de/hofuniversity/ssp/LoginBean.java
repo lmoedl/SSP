@@ -47,8 +47,9 @@ public class LoginBean implements Serializable {
         return "/index.xhtml";
     }
     
-    public void logout(){
+    public String logout(){
         customer = null;
+        return "index";
     }
     
     public String checkLoginStatus(){

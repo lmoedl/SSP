@@ -51,7 +51,7 @@ public class FleaMarketBean implements Serializable {
 
             fleaMarketEntityFacade.create(entity);
             
-             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Erfolgreich", "Der Flohmarktstand mit der Länge " + length + " in der Straße " + street + " ist 2 Tage lang für Sie reserviert."));
+             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Erfolgreich", "Der Flohmarktstand mit der Länge " + length + " Meter in der Straße \"" + street + "\" ist 2 Tage lang für Sie reserviert."));
         }else{
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_FATAL, "Fehlgeschlagen", "Es ist nicht mehr genügend Fläche verfügbar!"));
         }

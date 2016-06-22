@@ -32,15 +32,26 @@ public class LicencePlateFacade extends AbstractFacade<LicencePlateEntity> imple
     @PersistenceContext(unitName = "SSP")
     private EntityManager em;
 
+    /**
+     *
+     * @return
+     */
     @Override
     protected EntityManager getEntityManager() {
         return em;
     }
 
+    /**
+     *
+     */
     public LicencePlateFacade() {
         super(LicencePlateEntity.class);
     }
     
+    /**
+     *
+     * @return
+     */
     @Override
     public List<LicencePlateEntity> findAllOrdered(){
         CriteriaBuilder builder = getEntityManager().getCriteriaBuilder();
@@ -51,16 +62,16 @@ public class LicencePlateFacade extends AbstractFacade<LicencePlateEntity> imple
         //cq.where(builder.equal(c.get(LicencePlateEntity_.customer_id), CustomerEntity_.id));
         cq.orderBy(builder.asc(c.get("reservationDate")));
         
-        List<LicencePlateEntity> list = getEntityManager().createQuery(cq).getResultList();
-        
-        for(int i = 0; i<list.size(); i++){
-            System.out.println(list.get(i));
-        }
-        
-        return list;
+        return getEntityManager().createQuery(cq).getResultList();
     }
     
-    
+    /**
+     *
+     * @param city
+     * @param letters
+     * @param numbers
+     * @return
+     */
     @Override
     public boolean isLicencePlateExist(String city, String letters, int numbers){
         CriteriaBuilder builder =  getEntityManager().getCriteriaBuilder();
@@ -72,6 +83,11 @@ public class LicencePlateFacade extends AbstractFacade<LicencePlateEntity> imple
         return getEntityManager().createQuery(cq).getResultList().isEmpty();
     }
     
+    /**
+     *
+     * @param customer_id
+     * @return
+     */
     @Override
     public List<LicencePlateEntity> getReservedLicencePlatesOfCustomer(long customer_id){
         CriteriaBuilder builder =  getEntityManager().getCriteriaBuilder();
@@ -86,6 +102,11 @@ public class LicencePlateFacade extends AbstractFacade<LicencePlateEntity> imple
         return (List<LicencePlateEntity>) getEntityManager().createQuery(cq).getResultList();
     }
 
+    /**
+     *
+     * @param date
+     * @return
+     */
     @Override
     public int deleteExpiredReservations(Date date) {
         CriteriaBuilder builder = getEntityManager().getCriteriaBuilder();

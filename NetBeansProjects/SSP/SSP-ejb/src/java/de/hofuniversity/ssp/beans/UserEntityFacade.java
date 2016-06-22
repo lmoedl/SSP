@@ -27,15 +27,27 @@ public class UserEntityFacade extends AbstractFacade<CustomerEntity> implements 
     @PersistenceContext(unitName = "SSP")
     private EntityManager em;
 
+    /**
+     *
+     * @return
+     */
     @Override
     protected EntityManager getEntityManager() {
         return em;
     }
 
+    /**
+     *
+     */
     public UserEntityFacade() {
         super(CustomerEntity.class);
     }
     
+    /**
+     *
+     * @param email
+     * @return
+     */
     @Override
     public CustomerEntity findUserByEmail(String email){
         CriteriaBuilder builder =  getEntityManager().getCriteriaBuilder();

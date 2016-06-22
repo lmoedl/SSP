@@ -27,15 +27,27 @@ public class FleaMarketEntityFacade extends AbstractFacade<FleaMarketEntity> imp
     @PersistenceContext(unitName = "SSP")
     private EntityManager em;
 
+    /**
+     *
+     * @return
+     */
     @Override
     protected EntityManager getEntityManager() {
         return em;
     }
 
+    /**
+     *
+     */
     public FleaMarketEntityFacade() {
         super(FleaMarketEntity.class);
     }
 
+    /**
+     *
+     * @param customer_id
+     * @return
+     */
     @Override
     public List<FleaMarketEntity> getReservedFleaMarketsOfCustomer(long customer_id) {
         CriteriaBuilder builder = getEntityManager().getCriteriaBuilder();
@@ -49,6 +61,13 @@ public class FleaMarketEntityFacade extends AbstractFacade<FleaMarketEntity> imp
         return (List<FleaMarketEntity>) getEntityManager().createQuery(cq).getResultList();
     }
 
+    /**
+     *
+     * @param street
+     * @param length
+     * @param streetLength
+     * @return
+     */
     @Override
     public boolean isFleaMarketFree(String street, int length, int streetLength) {
         CriteriaBuilder builder = getEntityManager().getCriteriaBuilder();
@@ -70,6 +89,10 @@ public class FleaMarketEntityFacade extends AbstractFacade<FleaMarketEntity> imp
         return streetLength > resultLength + length;
     }
 
+    /**
+     *
+     * @return
+     */
     @Override
     public List<FleaMarketEntity> findAllOrdered(){
         CriteriaBuilder builder = getEntityManager().getCriteriaBuilder();
@@ -80,9 +103,11 @@ public class FleaMarketEntityFacade extends AbstractFacade<FleaMarketEntity> imp
         return getEntityManager().createQuery(cq).getResultList();
     }
     
-    
-    
-    
+    /**
+     *
+     * @param date
+     * @return
+     */
     @Override
     public int deleteExpiredReservations(Date date) {
         CriteriaBuilder builder = getEntityManager().getCriteriaBuilder();

@@ -11,17 +11,17 @@
         <nav>
             <h:form>
                 <p:menubar>
-                    <p:menuitem value="Home" outcome="/index" icon="fa fa-home"/>
-                    <p:menuitem value="Kennzeichen" outcome="/licencePlate" icon="fa fa-car"/>
-                    <p:menuitem value="Flohmarkt" outcome="/fleaMarket" icon="fa fa-medium"/>
-                    <p:submenu label="Admin" icon="fa fa-adn" rendered="#{loginBean.admin}">
+                    <p:menuitem value="Home" outcome="/index" icon="fa fa-fw fa-home"/>
+                    <p:menuitem value="Kennzeichen" outcome="/licencePlate" icon="fa fa-fw fa-car"/>
+                    <p:menuitem value="Flohmarkt" outcome="/fleaMarket" icon="fa fa-fw fa-medium"/>
+                    <p:submenu label="Admin" icon="fa fa-fw fa-adn" rendered="#{loginBean.admin}">
                         <p:menuitem value="Kennzeichenreservierung" outcome="/licencePlateReservation"/>
                         <p:menuitem value="Standreservierung" outcome="/fleaMarketReservation" />
                         <p:menuitem value="Benutzerverwaltung" outcome="/userAdministration"/>
                     </p:submenu>
-                    <p:menuitem><p:clock /></p:menuitem>
-                    <p:menuitem value="Login"  outcome="/login" icon="fa fa-lock" style="position: absolute; right: 10px" rendered="#{!loginBean.loggedIn}"/>
-                    <p:menuitem value="Logout" icon="fa fa-lock" style="position: absolute; right: 10px" actionListener="#{loginBean.logout()}" rendered="#{loginBean.loggedIn}" ajax="false"/>
+
+                    <p:menuitem value="Login"  outcome="/login" icon="fa fa-fw fa-lock" style="position: absolute; right: 10px" rendered="#{!loginBean.loggedIn}"/>
+                    <p:menuitem value="Logout" icon="fa fa-fw fa-lock" style="position: absolute; right: 10px" actionListener="#{loginBean.logout()}" rendered="#{loginBean.loggedIn}" ajax="false"/>
                 </p:menubar>
             </h:form>
         </nav>
@@ -30,28 +30,32 @@
 
             <f:view>
                 <h:form>
-                    <p:outputLabel for="prename">Vorname</p:outputLabel><br/>
-                    <p:inputText id="prename" value="#{userBean.prename}" required="true"/><br/>
-                    <p:outputLabel for="name">Name</p:outputLabel><br/>
-                    <p:inputText id="name" value="#{userBean.name}" required="true"/><br/>
-                    <p:outputLabel for="email">Email</p:outputLabel><br/>
-                    <p:inputText  id="email" value="#{userBean.email}" required="true" label="email">
-                        <!--f:validateRegex pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$"/-->
-                    </p:inputText><br/>
-                    <p:outputLabel for="password" rendered="#{!userBean.isEdit}">Passwort</p:outputLabel><br/>
-                    <p:password  id="password" value="#{userBean.password}" required="true" rendered="#{!userBean.isEdit}"/><br/>
-                    <p:outputLabel for="streetAddress">Straße</p:outputLabel><br/>
-                    <p:inputText id="streetAddress" value="#{userBean.streetAddress}" required="true"/><br/>
-                    <p:outputLabel for="zipCode">Postleitzahl</p:outputLabel><br/>
-                    <p:inputText id="zipCode" value="#{userBean.zipCode}" required="true"/><br/>
-                    <p:outputLabel for="city">Stadt</p:outputLabel><br/>
-                    <p:inputText id="city" value="#{userBean.city}" required="true"/><br/>
-                    <p:outputLabel value="Flohmarkt bearbeiten"/>
-                    <p:selectBooleanCheckbox value="#{userBean.isFleaMarktEdit}" rendered="#{loginBean.admin}"/>
-                    <p:outputLabel value="Kennzeichen bearbeiten"/>
-                    <p:selectBooleanCheckbox value="#{userBean.isLicencePlateEdit}" rendered="#{loginBean.admin}"/>
-                    <p:commandButton value="Anmelden" action="#{userBean.submit()}" ajax="false"/>
-
+                    <p:panel>
+                        <h:panelGrid id="grid" columns="2" cellpadding="5">
+                            <p:outputLabel for="prename">Vorname</p:outputLabel>
+                            <p:inputText id="prename" value="#{userBean.prename}" required="true"/>
+                            <p:outputLabel for="name">Name</p:outputLabel>
+                            <p:inputText id="name" value="#{userBean.name}" required="true"/>
+                            <p:outputLabel for="email">Email</p:outputLabel>
+                            <p:inputText  id="email" value="#{userBean.email}" required="true" label="email">
+                                <!--f:validateRegex pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$"/-->
+                            </p:inputText>
+                            <p:outputLabel for="password" rendered="#{!userBean.isEdit}">Passwort</p:outputLabel>
+                            <p:password  id="password" value="#{userBean.password}" required="true" rendered="#{!userBean.isEdit}"/>
+                            <p:outputLabel for="streetAddress">Straße</p:outputLabel>
+                            <p:inputText id="streetAddress" value="#{userBean.streetAddress}" required="true"/>
+                            <p:outputLabel for="zipCode">Postleitzahl</p:outputLabel>
+                            <p:inputText id="zipCode" value="#{userBean.zipCode}" required="true"/>
+                            <p:outputLabel for="city">Stadt</p:outputLabel>
+                            <p:inputText id="city" value="#{userBean.city}" required="true"/>
+                            <p:outputLabel value="Flohmarkt bearbeiten" rendered="#{loginBean.admin}"/>
+                            <p:selectBooleanCheckbox value="#{userBean.isFleaMarktEdit}" rendered="#{loginBean.admin}"/>
+                            <p:outputLabel value="Kennzeichen bearbeiten" rendered="#{loginBean.admin}"/>
+                            <p:selectBooleanCheckbox value="#{userBean.isLicencePlateEdit}" rendered="#{loginBean.admin}"/>
+                            <p:commandButton value="Anmelden" action="#{userBean.submit()}" ajax="false" rendered="#{!loginBean.loggedIn}"/>
+                            <p:commandButton value="Speichern" action="#{userBean.submit()}" ajax="false" rendered="#{loginBean.admin}"/>
+                        </h:panelGrid>
+                    </p:panel>
                 </h:form>
             </f:view>
 

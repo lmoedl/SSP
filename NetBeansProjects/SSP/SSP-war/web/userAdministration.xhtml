@@ -5,23 +5,24 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:p="http://primefaces.org/ui">
     <h:head>
+        <h:outputStylesheet library="css" name="style.css"/>
         <title>Facelet Title</title>
     </h:head>
     <h:body>
         <nav>
             <h:form>
                 <p:menubar>
-                    <p:menuitem value="Home" outcome="/index" icon="fa fa-home"/>
-                    <p:menuitem value="Kennzeichen" outcome="/licencePlate" icon="fa fa-car"/>
-                    <p:menuitem value="Flohmarkt" outcome="/fleaMarket" icon="fa fa-medium"/>
-                    <p:submenu label="Admin" icon="fa fa-adn" rendered="#{loginBean.admin}">
+                    <p:menuitem value="Home" outcome="/index" icon="fa fa-fw fa-home"/>
+                    <p:menuitem value="Kennzeichen" outcome="/licencePlate" icon="fa fa-fw fa-car"/>
+                    <p:menuitem value="Flohmarkt" outcome="/fleaMarket" icon="fa fa-fw fa-medium"/>
+                    <p:submenu label="Admin" icon="fa fa-fw fa-adn" rendered="#{loginBean.admin}">
                         <p:menuitem value="Kennzeichenreservierung" outcome="/licencePlateReservation"/>
                         <p:menuitem value="Standreservierung" outcome="/fleaMarketReservation" />
                         <p:menuitem value="Benutzerverwaltung" outcome="/userAdministration"/>
                     </p:submenu>
-                    <p:menuitem><p:clock /></p:menuitem>
-                    <p:menuitem value="Login"  outcome="/login" icon="fa fa-lock" style="position: absolute; right: 10px" rendered="#{!loginBean.loggedIn}"/>
-                    <p:menuitem value="Logout" icon="fa fa-lock" style="position: absolute; right: 10px" actionListener="#{loginBean.logout()}" rendered="#{loginBean.loggedIn}" ajax="false"/>
+
+                    <p:menuitem value="Login"  outcome="/login" icon="fa fa-fw fa-lock" style="position: absolute; right: 10px" rendered="#{!loginBean.loggedIn}"/>
+                    <p:menuitem value="Logout" icon="fa fa-fw fa-lock" style="position: absolute; right: 10px" actionListener="#{loginBean.logout()}" rendered="#{loginBean.loggedIn}" ajax="false"/>
                 </p:menubar>
             </h:form>
         </nav>
@@ -83,15 +84,17 @@
                         </p:column>
                         <p:column>
                             <f:facet name="header">
-                                <h:outputText value="Löschen"/>
+                                <h:outputText value=""/>
                             </f:facet>
-                            <p:commandButton value="Löschen" action="#{userAdministrationBean.deleteUser(item)}" ajax="false" class="tableButton"/>
+                            <p:commandButton value="Löschen" action="#{userAdministrationBean.deleteUser(item)}" ajax="false" style="margin: auto;
+                                             display: block;"/>
                         </p:column>
                         <p:column>
                             <f:facet name="header">
-                                <h:outputText value="Bearbeiten"/>
+                                <h:outputText value=""/>
                             </f:facet>
-                            <p:commandButton value="Bearbeiten" action="#{userAdministrationBean.editUser(item)}" ajax="false" class="tableButton"/>
+                            <p:commandButton value="Bearbeiten" action="#{userAdministrationBean.editUser(item)}" ajax="false" style="margin: auto;
+                                             display: block;"/>
                         </p:column>
                     </p:dataTable>
                 </h:form>

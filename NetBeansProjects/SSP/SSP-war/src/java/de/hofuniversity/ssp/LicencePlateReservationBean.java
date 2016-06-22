@@ -37,7 +37,9 @@ public class LicencePlateReservationBean implements Serializable {
     
     public void deleteExpiredReservations(){
         Calendar c = Calendar.getInstance();
-        c.add(Calendar.DAY_OF_MONTH, -2);
+        c.add(Calendar.DAY_OF_YEAR, -1);
+        
+        System.out.println(c.toString());
         licencePlateFacade.deleteExpiredReservations(c.getTime());
     }
     
