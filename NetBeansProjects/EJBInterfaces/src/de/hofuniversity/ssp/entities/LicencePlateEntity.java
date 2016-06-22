@@ -12,6 +12,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
@@ -33,7 +34,8 @@ public class LicencePlateEntity implements Serializable {
     private String letters;
     @Column(name = "numbers")
     private int numbers;
-    @Column(name = "customer_id")
+    @JoinColumn
+    @Column(name = "customer_id", nullable = false)
     private long customer_id;
     @Column(name = "reservationDate")
     @Temporal(TemporalType.DATE)

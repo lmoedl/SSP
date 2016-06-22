@@ -6,11 +6,13 @@
 package de.hofuniversity.ssp.entities;
 
 import java.io.Serializable;
+import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Temporal;
 
 /**
  *
@@ -29,6 +31,33 @@ public class FleaMarketEntity implements Serializable {
     
     @Column(name = "standLength" )
     private int standLength;
+    
+    @Column(name = "reservationDate")
+    @Temporal(javax.persistence.TemporalType.DATE)
+    private Date reservationDate;
+    
+    @Column(name = "customer_id")
+    private long customer_id;
+
+    public long getCustomer_id() {
+        return customer_id;
+    }
+
+    public void setCustomer_id(long customer_id) {
+        this.customer_id = customer_id;
+    }
+    
+    
+
+    public Date getReservationDate() {
+        return reservationDate;
+    }
+
+    public void setReservationDate(Date reservationDate) {
+        this.reservationDate = reservationDate;
+    }
+    
+    
 
     public String getStreet() {
         return street;

@@ -6,6 +6,8 @@
 package de.hofuniversity.ssp.beans;
 
 import de.hofuniversity.ssp.entities.FleaMarketEntity;
+import de.hofuniversity.ssp.entities.LicencePlateEntity;
+import java.util.Date;
 import java.util.List;
 import javax.ejb.Remote;
 
@@ -31,5 +33,11 @@ public interface FleaMarketEntityFacadeRemote {
     int count();
     
     List<FleaMarketEntity> getReservedFleaMarketsOfCustomer(long customer_id);
+    
+    boolean isFleaMarketFree(String street, int length, int streetLength);
+    
+    List<FleaMarketEntity> findAllOrdered();
+    
+    int deleteExpiredReservations(Date date);
     
 }

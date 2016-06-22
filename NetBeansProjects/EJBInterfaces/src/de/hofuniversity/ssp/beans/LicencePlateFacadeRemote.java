@@ -6,6 +6,7 @@
 package de.hofuniversity.ssp.beans;
 
 import de.hofuniversity.ssp.entities.LicencePlateEntity;
+import java.util.Date;
 import java.util.List;
 import javax.ejb.Remote;
 
@@ -33,5 +34,9 @@ public interface LicencePlateFacadeRemote {
     boolean isLicencePlateExist(String city, String letters, int numbers);
     
     List<LicencePlateEntity> getReservedLicencePlatesOfCustomer(long customer_id);
+    
+    int deleteExpiredReservations(Date date);
+    
+    List<LicencePlateEntity> findAllOrdered();
     
 }
