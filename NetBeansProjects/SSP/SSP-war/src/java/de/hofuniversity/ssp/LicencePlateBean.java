@@ -10,6 +10,7 @@ import de.hofuniversity.ssp.entities.LicencePlateEntity;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import javax.ejb.EJB;
@@ -59,11 +60,11 @@ public class LicencePlateBean implements Serializable {
             entity.setCity(city);
             entity.setLetters(letters.toUpperCase());
             entity.setNumbers(numbers);
-            entity.setCustomer_id(loginBean.getCustomer().getId());
+            entity.setCustomer_id(loginBean.getCustomer().getId());     
             entity.setReservationDate(new Date());
 
             licencePlateFacade.create(entity);
-            context.addMessage(null, new FacesMessage("Erfolgreich", "Das Kennzeichen " + city + " " + letters.toUpperCase() + " " + numbers + " ist 2 Tage für Sie reserviert!"));
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Erfolgreich", "Das Kennzeichen " + city + " " + letters.toUpperCase() + " " + numbers + " ist 2 Tage für Sie reserviert!"));
         }else{
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_FATAL, "Fehler", "Das Kennzeichen " + city + " " + letters.toUpperCase() + " " + numbers + " ist leider schon vergeben!"));
         }
@@ -71,6 +72,10 @@ public class LicencePlateBean implements Serializable {
     
     public List<LicencePlateEntity> getLicencePlates(){
         return licencePlateFacade.getReservedLicencePlatesOfCustomer(loginBean.getCustomer().getId());
+    }
+    
+    public void deleteReservation(LicencePlateEntity entity){
+        licencePlateFacade.remove(entity);
     }
     
 

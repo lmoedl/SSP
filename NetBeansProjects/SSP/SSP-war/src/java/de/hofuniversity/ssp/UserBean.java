@@ -34,7 +34,47 @@ public class UserBean implements Serializable{
     private String streetAddress;
     private int zipCode;
     private String city;
+    private boolean isFleaMarktEdit;
+    private boolean isLicencePlateEdit;
+    
+    private boolean isEdit;
+    private String userRole;
+    private long id;
+
+    public UserBean() {
+        isEdit = false;
+    }
         
+    public UserBean(CustomerEntity entity) {
+        this.prename = entity.getPrename();
+        this.name = entity.getName();
+        this.email = entity.getEmail();
+        this.password = entity.getPassword();
+        this.streetAddress = entity.getStreetAddress();
+        this.zipCode = entity.getZipCode();
+        this.city = entity.getCity();
+        this.isFleaMarktEdit = entity.isIsFleaMarket();
+        this.isLicencePlateEdit = entity.isIsLicencePlate();
+    }
+    
+    public void edit(CustomerEntity entity){
+         this.prename = entity.getPrename();
+        this.name = entity.getName();
+        this.email = entity.getEmail();
+        this.password = entity.getPassword();
+        this.streetAddress = entity.getStreetAddress();
+        this.zipCode = entity.getZipCode();
+        this.city = entity.getCity();
+        this.isFleaMarktEdit = entity.isIsFleaMarket();
+        this.isLicencePlateEdit = entity.isIsLicencePlate(); 
+        this.userRole = entity.getUserRole();
+        this.id = entity.getId();
+        
+        isEdit = true;
+    }
+    
+    
+    
     
     public String submit(){
         System.out.println("prename: " + prename + " name: " + name
@@ -50,17 +90,74 @@ public class UserBean implements Serializable{
         entity.setPrename(prename);
         entity.setStreetAddress(streetAddress);
         entity.setZipCode(zipCode);
+        
+        
+        if(!isEdit){
         entity.setIsFleaMarket(true);
         entity.setIsLicencePlate(true);
         entity.setUserRole(Role.USER.toString());
         
         userEntityFacade.create(entity);
+        }else{
+            entity.setIsFleaMarket(isFleaMarktEdit);
+            entity.setIsLicencePlate(isLicencePlateEdit);
+            entity.setUserRole(userRole);
+            entity.setId(id);
+            userEntityFacade.edit(entity);
+            isEdit = false;
+            
+            return "userAdministration";
+        }
         
         return "/login.xhtml";
         //?faces-redirect=true
         
     }
 
+    public boolean isIsEdit() {
+        return isEdit;
+    }
+
+    public void setIsEdit(boolean isEdit) {
+        this.isEdit = isEdit;
+    }
+
+    public String getUserRole() {
+        return userRole;
+    }
+
+    public void setUserRole(String userRole) {
+        this.userRole = userRole;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+    
+    
+
+    public boolean isIsFleaMarktEdit() {
+        return isFleaMarktEdit;
+    }
+
+    public void setIsFleaMarktEdit(boolean isFleaMarktEdit) {
+        this.isFleaMarktEdit = isFleaMarktEdit;
+    }
+
+    public boolean isIsLicencePlateEdit() {
+        return isLicencePlateEdit;
+    }
+
+    public void setIsLicencePlateEdit(boolean isLicencePlateEdit) {
+        this.isLicencePlateEdit = isLicencePlateEdit;
+    }
+
+    
+    
     public String getPrename() {
         return prename;
     }

@@ -9,17 +9,21 @@
     </h:head>
     <h:body>
         <nav>
+        <h:form>
             <p:menubar>
                 <p:menuitem value="Home" outcome="/index" icon="fa fa-home"/>
                 <p:menuitem value="Kennzeichen" outcome="/licencePlate" icon="fa fa-car"/>
-                <p:menuitem value="Fohmarkt" outcome="/fleaMarket" icon="fa fa-medium"/>
-                <p:menuitem value="Login" outcome="/login" icon="fa fa-lock"/>
+                <p:menuitem value="Flohmarkt" outcome="/fleaMarket" icon="fa fa-medium"/>
                 <p:submenu label="Admin" icon="fa fa-adn" rendered="#{loginBean.admin}">
                     <p:menuitem value="Kennzeichenreservierung" outcome="/licencePlateReservation"/>
                     <p:menuitem value="Standreservierung" outcome="/fleaMarketReservation" />
                     <p:menuitem value="Benutzerverwaltung" outcome="/userAdministration"/>
                 </p:submenu>
+                <p:menuitem><p:clock /></p:menuitem>
+                <p:menuitem value="Login"  outcome="/login" icon="fa fa-lock" style="position: absolute; right: 10px" rendered="#{!loginBean.loggedIn}"/>
+                <p:menuitem value="Logout" icon="fa fa-lock" style="position: absolute; right: 10px" actionListener="#{loginBean.logout()}" rendered="#{loginBean.loggedIn}" ajax="false"/>
             </p:menubar>
+        </h:form>
         </nav>
 
         <main>
@@ -42,7 +46,7 @@
                             <f:selectItem itemLabel="5 m" itemValue="5" />
                         </p:selectOneMenu>
                     </h:panelGrid>
-                    <p:commandButton value="Reservieren" action="#{fleaMarketBean.reserve()}"/>
+                    <p:commandButton value="Reservieren" action="#{fleaMarketBean.reserve()}" update="growl" rendered="#{loginBean.loggedIn}" ajax="false"/>
                 </p:panel>
             </h:form>
 
@@ -51,8 +55,16 @@
 
 
                 <h:form rendered="#{loginBean.loggedIn}">
-                    <h1><h:outputText value="Ihre reservierten Flohmarktstände"/></h1>
+                    <h1><h:outputText value="Ihre bisherigen Standreservierungen"/></h1>
                     <p:dataTable value="#{fleaMarketBean.fleaMarkets}" var="item">
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="ReservationDate"/>
+                            </f:facet>
+                            <h:outputText value="#{item.reservationDate}">
+                                <f:convertDateTime pattern="dd.MM.yyyy" />
+                            </h:outputText>
+                        </p:column>
                         <p:column>
                             <f:facet name="header">
                                 <h:outputText value="Street"/>
@@ -67,13 +79,14 @@
                         </p:column>
                         <p:column>
                             <f:facet name="header">
-                                <h:outputText value="Id"/>
+                                <h:outputText value="Löschen"/>
                             </f:facet>
-                            <h:outputText value="#{item.id}"/>
+                            <p:commandButton value="Löschen" action="#{fleaMarketBean.deleteReservation(item)}" ajax="false" class="tableButton"/>
                         </p:column>
                     </p:dataTable>
                 </h:form>
             </f:view>
+
 
 
 

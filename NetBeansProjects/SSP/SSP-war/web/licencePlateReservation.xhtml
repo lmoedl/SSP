@@ -9,17 +9,21 @@
     </h:head>
     <h:body>
         <nav>
+        <h:form>
             <p:menubar>
                 <p:menuitem value="Home" outcome="/index" icon="fa fa-home"/>
                 <p:menuitem value="Kennzeichen" outcome="/licencePlate" icon="fa fa-car"/>
-                <p:menuitem value="Fohmarkt" outcome="/fleaMarket" icon="fa fa-medium"/>
-                <p:menuitem value="Login" outcome="/login" icon="fa fa-lock"/>
+                <p:menuitem value="Flohmarkt" outcome="/fleaMarket" icon="fa fa-medium"/>
                 <p:submenu label="Admin" icon="fa fa-adn" rendered="#{loginBean.admin}">
                     <p:menuitem value="Kennzeichenreservierung" outcome="/licencePlateReservation"/>
                     <p:menuitem value="Standreservierung" outcome="/fleaMarketReservation" />
                     <p:menuitem value="Benutzerverwaltung" outcome="/userAdministration"/>
                 </p:submenu>
+                <p:menuitem><p:clock /></p:menuitem>
+                <p:menuitem value="Login"  outcome="/login" icon="fa fa-lock" style="position: absolute; right: 10px" rendered="#{!loginBean.loggedIn}"/>
+                <p:menuitem value="Logout" icon="fa fa-lock" style="position: absolute; right: 10px" actionListener="#{loginBean.logout()}" rendered="#{loginBean.loggedIn}" ajax="false"/>
             </p:menubar>
+        </h:form>
         </nav>
 
         <main>
@@ -28,37 +32,37 @@
 
 
                 <h:form>
-                    <h1><h:outputText value="List"/></h1>
+                    <h1><h:outputText value="Alle Kennzeichenreservierungen"/></h1>
                     <p:dataTable value="#{licencePlateReservationBean.licencePlates}" var="item">
                         <p:column>
                             <f:facet name="header">
-                                <h:outputText value="ReservationDate"/>
+                                <h:outputText value="Reservierungsdatum"/>
                             </f:facet>
                             <h:outputText value="#{item.reservationDate}">
-                                <f:convertDateTime pattern="MM/dd/yyyy" />
+                                <f:convertDateTime pattern="dd.MM.yyyy" />
                             </h:outputText>
                         </p:column>
                         <p:column>
                             <f:facet name="header">
-                                <h:outputText value="Customer_id"/>
+                                <h:outputText value="Kundennummer"/>
                             </f:facet>
                             <h:outputText value="#{item.customer_id}"/>
                         </p:column>
                         <p:column>
                             <f:facet name="header">
-                                <h:outputText value="City"/>
+                                <h:outputText value="Stadt"/>
                             </f:facet>
                             <h:outputText value="#{item.city}"/>
                         </p:column>
                         <p:column>
                             <f:facet name="header">
-                                <h:outputText value="Letters"/>
+                                <h:outputText value="Buchstaben"/>
                             </f:facet>
                             <h:outputText value="#{item.letters}"/>
                         </p:column>
                         <p:column>
                             <f:facet name="header">
-                                <h:outputText value="Numbers"/>
+                                <h:outputText value="Zahlen"/>
                             </f:facet>
                             <h:outputText value="#{item.numbers}"/>
                         </p:column>
@@ -68,11 +72,17 @@
                             </f:facet>
                             <h:outputText value="#{item.id}"/>
                         </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="Löschen"/>
+                            </f:facet>
+                            <p:commandButton value="Löschen" action="#{licencePlateReservationBean.deleteLicencePlateReservation(item)}" ajax="false" class="tableButton"/>
+                        </p:column>
                     </p:dataTable>
                 </h:form>
             </f:view>
 
-
+            <p:commandButton action="#{licencePlateReservationBean.deleteExpiredReservations()}" value="Ablgelaufene löschen"/>
 
         </main>
 

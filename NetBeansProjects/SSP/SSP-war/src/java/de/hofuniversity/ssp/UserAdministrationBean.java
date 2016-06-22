@@ -12,6 +12,7 @@ import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
 import java.util.List;
 import javax.ejb.EJB;
+import javax.inject.Inject;
 
 /**
  *
@@ -24,11 +25,24 @@ public class UserAdministrationBean implements Serializable {
     @EJB
     private UserEntityFacadeRemote userEntityFacade;
     
+    @Inject
+    private UserBean userBean;
+    
     public UserAdministrationBean() {
     }
     
     public List<CustomerEntity> getUsers(){
         return userEntityFacade.findAll();
+    }
+    
+    public void deleteUser(CustomerEntity customerEntity){
+        userEntityFacade.remove(customerEntity);
+    }
+    
+    public String editUser(CustomerEntity entity){
+        userBean.edit(entity);
+        
+        return "register";
     }
     
     

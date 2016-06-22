@@ -8,40 +8,54 @@
         <title>Registrieren</title>
     </h:head>
     <h:body>
-        <p:menubar>
-            <p:menuitem value="Home" outcome="/index" icon="fa fa-home"/>
-            <p:menuitem value="Kennzeichen" outcome="/licencePlate" icon="fa fa-car"/>
-            <p:menuitem value="Fohmarkt" outcome="/fleaMarket" icon="fa fa-medium"/>
-            <p:menuitem value="Login" outcome="/login" icon="fa fa-lock"/>
-            <p:submenu label="Admin" icon="fa fa-adn" rendered="#{loginBean.admin}">
-                <p:menuitem value="Kennzeichenreservierung" outcome="/licencePlateReservation"/>
-                <p:menuitem value="Standreservierung" outcome="/fleaMarketReservation" />
-                <p:menuitem value="Benutzerverwaltung" outcome="/userAdministration"/>
-            </p:submenu>
-        </p:menubar>
-        
-        <f:view>
+        <nav>
             <h:form>
-                <p:outputLabel for="prename">Vorname</p:outputLabel><br/>
-                <p:inputText id="prename" value="#{userBean.prename}" required="true"/><br/>
-                <p:outputLabel for="name">Name</p:outputLabel><br/>
-                <p:inputText id="name" value="#{userBean.name}" required="true"/><br/>
-                <p:outputLabel for="email">Email</p:outputLabel><br/>
-                <p:inputText  id="email" value="#{userBean.email}" required="true" label="email">
-                    <!--f:validateRegex pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$"/-->
-                </p:inputText><br/>
-                <p:outputLabel for="password">Passwort</p:outputLabel><br/>
-                <p:password  id="password" value="#{userBean.password}" required="true"/><br/>
-                <p:outputLabel for="streetAddress">Straße</p:outputLabel><br/>
-                <p:inputText id="streetAddress" value="#{userBean.streetAddress}" required="true"/><br/>
-                <p:outputLabel for="zipCode">Postleitzahl</p:outputLabel><br/>
-                <p:inputText id="zipCode" value="#{userBean.zipCode}" required="true"/><br/>
-                <p:outputLabel for="city">Stadt</p:outputLabel><br/>
-                <p:inputText id="city" value="#{userBean.city}" required="true"/><br/>
-                <p:commandButton value="Anmelden" action="#{userBean.submit()}" ajax="false"/>
-
+                <p:menubar>
+                    <p:menuitem value="Home" outcome="/index" icon="fa fa-home"/>
+                    <p:menuitem value="Kennzeichen" outcome="/licencePlate" icon="fa fa-car"/>
+                    <p:menuitem value="Flohmarkt" outcome="/fleaMarket" icon="fa fa-medium"/>
+                    <p:submenu label="Admin" icon="fa fa-adn" rendered="#{loginBean.admin}">
+                        <p:menuitem value="Kennzeichenreservierung" outcome="/licencePlateReservation"/>
+                        <p:menuitem value="Standreservierung" outcome="/fleaMarketReservation" />
+                        <p:menuitem value="Benutzerverwaltung" outcome="/userAdministration"/>
+                    </p:submenu>
+                    <p:menuitem><p:clock /></p:menuitem>
+                    <p:menuitem value="Login"  outcome="/login" icon="fa fa-lock" style="position: absolute; right: 10px" rendered="#{!loginBean.loggedIn}"/>
+                    <p:menuitem value="Logout" icon="fa fa-lock" style="position: absolute; right: 10px" actionListener="#{loginBean.logout()}" rendered="#{loginBean.loggedIn}" ajax="false"/>
+                </p:menubar>
             </h:form>
-        </f:view>
+        </nav>
+
+        <main>
+
+            <f:view>
+                <h:form>
+                    <p:outputLabel for="prename">Vorname</p:outputLabel><br/>
+                    <p:inputText id="prename" value="#{userBean.prename}" required="true"/><br/>
+                    <p:outputLabel for="name">Name</p:outputLabel><br/>
+                    <p:inputText id="name" value="#{userBean.name}" required="true"/><br/>
+                    <p:outputLabel for="email">Email</p:outputLabel><br/>
+                    <p:inputText  id="email" value="#{userBean.email}" required="true" label="email">
+                        <!--f:validateRegex pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$"/-->
+                    </p:inputText><br/>
+                    <p:outputLabel for="password" rendered="#{!userBean.isEdit}">Passwort</p:outputLabel><br/>
+                    <p:password  id="password" value="#{userBean.password}" required="true" rendered="#{!userBean.isEdit}"/><br/>
+                    <p:outputLabel for="streetAddress">Straße</p:outputLabel><br/>
+                    <p:inputText id="streetAddress" value="#{userBean.streetAddress}" required="true"/><br/>
+                    <p:outputLabel for="zipCode">Postleitzahl</p:outputLabel><br/>
+                    <p:inputText id="zipCode" value="#{userBean.zipCode}" required="true"/><br/>
+                    <p:outputLabel for="city">Stadt</p:outputLabel><br/>
+                    <p:inputText id="city" value="#{userBean.city}" required="true"/><br/>
+                    <p:outputLabel value="Flohmarkt bearbeiten"/>
+                    <p:selectBooleanCheckbox value="#{userBean.isFleaMarktEdit}" rendered="#{loginBean.admin}"/>
+                    <p:outputLabel value="Kennzeichen bearbeiten"/>
+                    <p:selectBooleanCheckbox value="#{userBean.isLicencePlateEdit}" rendered="#{loginBean.admin}"/>
+                    <p:commandButton value="Anmelden" action="#{userBean.submit()}" ajax="false"/>
+
+                </h:form>
+            </f:view>
+
+        </main>
     </h:body>
 </html>
 

@@ -6,14 +6,21 @@
 package de.hofuniversity.ssp.beans;
 
 import de.hofuniversity.ssp.entities.CustomerEntity;
+import de.hofuniversity.ssp.entities.CustomerEntity_;
+import de.hofuniversity.ssp.entities.FleaMarketEntity;
 import de.hofuniversity.ssp.entities.LicencePlateEntity;
+import de.hofuniversity.ssp.entities.LicencePlateEntity_;
+import java.util.Date;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaDelete;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Join;
 import javax.persistence.criteria.Root;
+import javax.persistence.criteria.SetJoin;
 
 /**
  *
@@ -35,6 +42,26 @@ public class LicencePlateFacade extends AbstractFacade<LicencePlateEntity> imple
     }
     
     @Override
+    public List<LicencePlateEntity> findAllOrdered(){
+        CriteriaBuilder builder = getEntityManager().getCriteriaBuilder();
+        CriteriaQuery cq = builder.createQuery();
+        Root<LicencePlateEntity> c = cq.from(LicencePlateEntity.class);
+        //Join<LicencePlateEntity, CustomerEntity> join = c.join("join");
+        cq.select(c);
+        //cq.where(builder.equal(c.get(LicencePlateEntity_.customer_id), CustomerEntity_.id));
+        cq.orderBy(builder.asc(c.get("reservationDate")));
+        
+        List<LicencePlateEntity> list = getEntityManager().createQuery(cq).getResultList();
+        
+        for(int i = 0; i<list.size(); i++){
+            System.out.println(list.get(i));
+        }
+        
+        return list;
+    }
+    
+    
+    @Override
     public boolean isLicencePlateExist(String city, String letters, int numbers){
         CriteriaBuilder builder =  getEntityManager().getCriteriaBuilder();
         CriteriaQuery cq = builder.createQuery();
@@ -52,10 +79,21 @@ public class LicencePlateFacade extends AbstractFacade<LicencePlateEntity> imple
         Root<LicencePlateEntity> c = cq.from(LicencePlateEntity.class);
         cq.select(c);
         cq.where(builder.equal(c.get("customer_id"), customer_id));
+        cq.orderBy(builder.asc(c.get("reservationDate")));
         
         System.out.println("customer_id" + customer_id);
         
         return (List<LicencePlateEntity>) getEntityManager().createQuery(cq).getResultList();
+    }
+
+    @Override
+    public int deleteExpiredReservations(Date date) {
+        CriteriaBuilder builder = getEntityManager().getCriteriaBuilder();
+        CriteriaDelete cq = builder.createCriteriaDelete(LicencePlateEntity.class);
+        Root<LicencePlateEntity> c = cq.from(LicencePlateEntity.class);
+        
+        cq.where(builder.lessThan(c.get("reservationDate"), date));
+        return getEntityManager().createQuery(cq).executeUpdate();
     }
     
 }

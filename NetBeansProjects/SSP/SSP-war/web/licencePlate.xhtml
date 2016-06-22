@@ -8,18 +8,25 @@
         <title>Facelet Title</title>
     </h:head>
     <h:body>
-        <p:menubar>
-            <p:menuitem value="Home" outcome="/index" icon="fa fa-home"/>
-            <p:menuitem value="Kennzeichen" outcome="/licencePlate" icon="fa fa-car"/>
-            <p:menuitem value="Fohmarkt" outcome="/fleaMarket" icon="fa fa-medium"/>
-            <p:menuitem value="Login" outcome="/login" icon="fa fa-lock"/>
-            <p:submenu label="Admin" icon="fa fa-adn" rendered="#{loginBean.admin}">
-                <p:menuitem icon="fa fa-rub" value="Kennzeichenreservierung" outcome="/licencePlateReservation"/>
-                <p:menuitem icon="fa fa-map-marker" value="Standreservierung" outcome="/fleaMarketReservation" />
-                <p:menuitem icon="fa fa-user" value="Benutzerverwaltung" outcome="/userAdministration"/>
-            </p:submenu>
-        </p:menubar>
-
+        <nav>
+        <h:form>
+            <p:menubar>
+                <p:menuitem value="Home" outcome="/index" icon="fa fa-home"/>
+                <p:menuitem value="Kennzeichen" outcome="/licencePlate" icon="fa fa-car"/>
+                <p:menuitem value="Flohmarkt" outcome="/fleaMarket" icon="fa fa-medium"/>
+                <p:submenu label="Admin" icon="fa fa-adn" rendered="#{loginBean.admin}">
+                    <p:menuitem value="Kennzeichenreservierung" outcome="/licencePlateReservation"/>
+                    <p:menuitem value="Standreservierung" outcome="/fleaMarketReservation" />
+                    <p:menuitem value="Benutzerverwaltung" outcome="/userAdministration"/>
+                </p:submenu>
+                <p:menuitem><p:clock /></p:menuitem>
+                <p:menuitem value="Login"  outcome="/login" icon="fa fa-lock" style="position: absolute; right: 10px" rendered="#{!loginBean.loggedIn}"/>
+                <p:menuitem value="Logout" icon="fa fa-lock" style="position: absolute; right: 10px" actionListener="#{loginBean.logout()}" rendered="#{loginBean.loggedIn}" ajax="false"/>
+            </p:menubar>
+        </h:form>
+        </nav>
+        
+        <main>
             <h:form>
                 <p:growl id="growl" showDetail="true" sticky="true"/>
                 <p:panel>
@@ -63,12 +70,6 @@
                         </p:column>
                         <p:column>
                             <f:facet name="header">
-                                <h:outputText value="Customer_id"/>
-                            </f:facet>
-                            <h:outputText value="#{item.customer_id}"/>
-                        </p:column>
-                        <p:column>
-                            <f:facet name="header">
                                 <h:outputText value="Stadt"/>
                             </f:facet>
                             <h:outputText value="#{item.city}"/>
@@ -85,12 +86,18 @@
                             </f:facet>
                             <h:outputText value="#{item.numbers}"/>
                         </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="Löschen"/>
+                            </f:facet>
+                            <p:commandButton value="Löschen" action="#{licencePlateBean.deleteReservation(item)}" ajax="false" class="tableButton"/>
+                        </p:column>
                     </p:dataTable>
                 </h:form>
             </f:view>
 
 
-        
+        </main>
     </h:body>
 </html>
 

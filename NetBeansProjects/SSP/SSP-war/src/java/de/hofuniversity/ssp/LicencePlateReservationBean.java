@@ -10,6 +10,8 @@ import de.hofuniversity.ssp.entities.LicencePlateEntity;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import javax.ejb.EJB;
 
@@ -29,7 +31,18 @@ public class LicencePlateReservationBean implements Serializable {
     
     
     public List<LicencePlateEntity> getLicencePlates(){
-        return licencePlateFacade.findAll();
+        
+        return licencePlateFacade.findAllOrdered();
+    }
+    
+    public void deleteExpiredReservations(){
+        Calendar c = Calendar.getInstance();
+        c.add(Calendar.DAY_OF_MONTH, -2);
+        licencePlateFacade.deleteExpiredReservations(c.getTime());
+    }
+    
+    public void deleteLicencePlateReservation(LicencePlateEntity entity){
+        licencePlateFacade.remove(entity);
     }
     
     

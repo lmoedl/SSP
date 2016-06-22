@@ -5,9 +5,14 @@
  */
 package de.hofuniversity.ssp;
 
+import de.hofuniversity.ssp.beans.FleaMarketEntityFacadeRemote;
+import de.hofuniversity.ssp.entities.FleaMarketEntity;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
+import java.util.Calendar;
+import java.util.List;
+import javax.ejb.EJB;
 
 /**
  *
@@ -17,10 +22,23 @@ import java.io.Serializable;
 @SessionScoped
 public class FleaMarketReservationBean implements Serializable {
 
-    /**
-     * Creates a new instance of FleaMarketReservationBean
-     */
+    @EJB
+    private FleaMarketEntityFacadeRemote fleaMarketEntityFacade;
+    
     public FleaMarketReservationBean() {
     }
     
+    public List<FleaMarketEntity> getReservedFleaMarkets(){
+        return fleaMarketEntityFacade.findAllOrdered();
+    }
+    
+    public void deleteFleaMarketReservation(FleaMarketEntity entity){
+        fleaMarketEntityFacade.remove(entity);
+    }
+    
+        public void deleteExpiredReservations(){
+        Calendar c = Calendar.getInstance();
+        c.add(Calendar.DAY_OF_MONTH, -2);
+        fleaMarketEntityFacade.deleteExpiredReservations(c.getTime());
+    }
 }

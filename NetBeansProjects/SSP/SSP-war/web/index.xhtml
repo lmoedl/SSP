@@ -8,24 +8,34 @@
         <title>Bürgerportal</title>
     </h:head>
     <h:body>
-        <p:menubar>
-            <p:menuitem value="Home" outcome="/index" icon="fa fa-home"/>
-            <p:menuitem value="Kennzeichen" outcome="/licencePlate" icon="fa fa-car"/>
-            <p:menuitem value="Fohmarkt" outcome="/fleaMarket" icon="fa fa-medium"/>
-            <p:submenu label="Admin" icon="fa fa-adn" rendered="#{loginBean.admin}">
-                <p:menuitem value="Kennzeichenreservierung" outcome="/licencePlateReservation"/>
-                <p:menuitem value="Standreservierung" outcome="/fleaMarketReservation" />
-                <p:menuitem value="Benutzerverwaltung" outcome="/userAdministration"/>
-            </p:submenu>
-            <p:menuitem value="Login"  outcome="/login" icon="fa fa-lock"/>
-        </p:menubar>
+        <nav>
+            <h:form>
+                <p:menubar>
+                    <p:menuitem value="Home" outcome="/index" icon="fa fa-home"/>
+                    <p:menuitem value="Kennzeichen" outcome="/licencePlate" icon="fa fa-car"/>
+                    <p:menuitem value="Flohmarkt" outcome="/fleaMarket" icon="fa fa-medium"/>
+                    <p:submenu label="Admin" icon="fa fa-adn" rendered="#{loginBean.admin}">
+                        <p:menuitem value="Kennzeichenreservierung" outcome="/licencePlateReservation"/>
+                        <p:menuitem value="Standreservierung" outcome="/fleaMarketReservation" />
+                        <p:menuitem value="Benutzerverwaltung" outcome="/userAdministration"/>
+                    </p:submenu>
+                    <p:menuitem><p:clock class="clock" pattern="dd.MM.yyyy HH:mm:ss"/></p:menuitem>
+                    <p:menuitem value="Login"  outcome="/login" icon="fa fa-lock" style="position: absolute; right: 10px" rendered="#{!loginBean.loggedIn}"/>
+                    <p:menuitem value="Logout" icon="fa fa-lock" style="position: absolute; right: 10px" actionListener="#{loginBean.logout()}" rendered="#{loginBean.loggedIn}" ajax="false"/>
+                </p:menubar>
+            </h:form>
+        </nav>
+        <main>
+            <div>
+                <div class="indexButtons" align="center">
+                    <p:button value="Kennzeichen" outcome="/licencePlate.xhtml" icon="fa fa-car"/>
+                    <img src="images/AppIcon-01.png" alt="Logo" style="width: 300px"/>
 
-        <p:button value="Kennzeichen" outcome="/licencePlate.xhtml"/>
-        <p:button value="Flohmarkt" outcome="/fleaMarket.xhtml"/>
-        
-        <p:calendar />        
-        <p:clock />
+                    <p:button value="Flohmarkt" outcome="/fleaMarket.xhtml" icon="fa fa-medium" image="buttonImage"/>
+                </div>
+            </div>
 
+        </main>
     </h:body>
 </html>
 
