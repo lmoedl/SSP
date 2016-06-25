@@ -6,6 +6,7 @@
       xmlns:p="http://primefaces.org/ui">
     <h:head>
         <h:outputStylesheet library="css" name="style.css"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
         <title>Bürgerportal</title>
     </h:head>
     <h:body>
@@ -13,11 +14,14 @@
             <h:form>
                 <p:menubar>
                     <p:menuitem value="Home" outcome="/index" icon="fa fa-fw fa-home"/>
-                    <p:menuitem value="Kennzeichen" outcome="/licencePlate" icon="fa fa-fw fa-car"/>
-                    <p:menuitem value="Flohmarkt" outcome="/fleaMarket" icon="fa fa-fw fa-medium"/>
+                    <p:menuitem value="Kennzeichen" outcome="/licencePlate" icon="fa fa-fw fa-car" />
+                    <p:menuitem value="Flohmarkt" outcome="/fleaMarket" icon="fa fa-fw fa-medium" />
                     <p:submenu label="Admin" icon="fa fa-fw fa-adn" rendered="#{loginBean.admin}">
                         <p:menuitem value="Kennzeichenreservierung" outcome="/licencePlateReservation"/>
-                        <p:menuitem value="Standreservierung" outcome="/fleaMarketReservation" />
+                        <p:submenu label="Flohmarktverwaltung">
+                            <p:menuitem value="Standreservierungen" outcome="/fleaMarketReservation" />
+                            <p:menuitem value="Flohmarkt erstellen" outcome="/createFleaMarket" />
+                        </p:submenu>
                         <p:menuitem value="Benutzerverwaltung" outcome="/userAdministration"/>
                     </p:submenu>
 
@@ -30,8 +34,10 @@
             <div style="position: relative;">
                 <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, 50%);">
                     <p:button value="Kennzeichen" outcome="/licencePlate.xhtml" icon="fa fa-fw fa-car" />
-                    <img src="resources/images/AppIcon-01.png" alt="Logo" style="width: 300px"/>
 
+                    <p:commandLink actionListener="#{indexBean.addExampleData()}" >
+                        <p:graphicImage alt="Logo" value="resources/images/AppIcon-01.png" style="width: 300px" />
+                    </p:commandLink>
                     <p:button value="Flohmarkt" outcome="/fleaMarket.xhtml" icon="fa fa-fw fa-medium"/>
                 </div>
             </div>

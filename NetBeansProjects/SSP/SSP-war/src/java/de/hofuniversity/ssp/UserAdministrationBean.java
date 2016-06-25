@@ -7,6 +7,9 @@ package de.hofuniversity.ssp;
 
 import de.hofuniversity.ssp.beans.UserEntityFacadeRemote;
 import de.hofuniversity.ssp.entities.CustomerEntity;
+import de.hofuniversity.ssp.entities.CustomerEntity_;
+import de.hofuniversity.ssp.enums.Role;
+import de.hofuniversity.ssp.security.HashAlgorithm;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
@@ -43,6 +46,22 @@ public class UserAdministrationBean implements Serializable {
         userBean.edit(entity);
         
         return "register";
+    }
+    
+    public void addExampleData(){
+        CustomerEntity entity1 = new CustomerEntity();
+        entity1.setCity("Hof");
+        entity1.setEmail("hans.wurscht@gmail.com");
+        entity1.setIsFleaMarket(true);
+        entity1.setIsLicencePlate(true);
+        entity1.setName("Wurscht");
+        entity1.setPassword(HashAlgorithm.getPasswordHash("password"));
+        entity1.setPrename("Hans");
+        entity1.setStreetAddress("Alfons-Goppel-Platz 1");
+        entity1.setUserRole(Role.ADMIN.toString());
+        entity1.setZipCode(95028);
+        
+        userEntityFacade.create(entity1);
     }
     
     

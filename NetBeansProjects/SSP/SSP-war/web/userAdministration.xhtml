@@ -6,18 +6,22 @@
       xmlns:p="http://primefaces.org/ui">
     <h:head>
         <h:outputStylesheet library="css" name="style.css"/>
-        <title>Facelet Title</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <title>Benutzeradministration</title>
     </h:head>
     <h:body>
         <nav>
-            <h:form>
+              <h:form>
                 <p:menubar>
                     <p:menuitem value="Home" outcome="/index" icon="fa fa-fw fa-home"/>
-                    <p:menuitem value="Kennzeichen" outcome="/licencePlate" icon="fa fa-fw fa-car"/>
-                    <p:menuitem value="Flohmarkt" outcome="/fleaMarket" icon="fa fa-fw fa-medium"/>
+                    <p:menuitem value="Kennzeichen" outcome="/licencePlate" icon="fa fa-fw fa-car" />
+                    <p:menuitem value="Flohmarkt" outcome="/fleaMarket" icon="fa fa-fw fa-medium" />
                     <p:submenu label="Admin" icon="fa fa-fw fa-adn" rendered="#{loginBean.admin}">
                         <p:menuitem value="Kennzeichenreservierung" outcome="/licencePlateReservation"/>
-                        <p:menuitem value="Standreservierung" outcome="/fleaMarketReservation" />
+                        <p:submenu label="Flohmarktverwaltung">
+                            <p:menuitem value="Standreservierungen" outcome="/fleaMarketReservation" />
+                            <p:menuitem value="Flohmarkt erstellen" outcome="/createFleaMarket" />
+                        </p:submenu>
                         <p:menuitem value="Benutzerverwaltung" outcome="/userAdministration"/>
                     </p:submenu>
 
@@ -31,7 +35,7 @@
             <f:view>
 
 
-                <h:form>
+                <h:form rendered="#{loginBean.admin}">
                     <h1><h:outputText value="Alle Benutzer"/></h1>
                     <p:dataTable value="#{userAdministrationBean.users}" var="item">
                         <p:column>
@@ -42,13 +46,21 @@
                         </p:column>
                         <p:column>
                             <f:facet name="header">
-                                <h:outputText value="Id"/>
+                                <h:outputText value="ID"/>
                             </f:facet>
                             <h:outputText value="#{item.id}"/>
                         </p:column>
                         <p:column>
                             <f:facet name="header">
-                                <h:outputText value="Email"/>
+                                <h:outputText value="Freischaltungen"/>
+                            </f:facet>
+                            <h:outputText value="#{item.licencePlateRight}"/><br />
+                            <h:outputText value="#{item.fleaMarketRight}"/>
+                            
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="E-Mail"/>
                             </f:facet>
                             <h:outputText value="#{item.email}"/>
                         </p:column>
@@ -66,7 +78,7 @@
                         </p:column>
                         <p:column>
                             <f:facet name="header">
-                                <h:outputText value="Straße"/>
+                                <h:outputText value="Straße und Hausnummer"/>
                             </f:facet>
                             <h:outputText value="#{item.streetAddress}"/>
                         </p:column>
@@ -78,7 +90,7 @@
                         </p:column>
                         <p:column>
                             <f:facet name="header">
-                                <h:outputText value="Stadt"/>
+                                <h:outputText value="Ort"/>
                             </f:facet>
                             <h:outputText value="#{item.city}"/>
                         </p:column>
@@ -86,8 +98,12 @@
                             <f:facet name="header">
                                 <h:outputText value=""/>
                             </f:facet>
-                            <p:commandButton value="Löschen" action="#{userAdministrationBean.deleteUser(item)}" ajax="false" style="margin: auto;
-                                             display: block;"/>
+                            
+                            <p:commandButton value="Löschen" action="#{userAdministrationBean.deleteUser(item)}" update="@form" style="margin: auto;
+                                             display: block;">
+                                <p:confirm header="Löschen" message="Wollen Sie den den Benutzer '#{item.prename} #{item.name}' wirklich löschen?" icon="ui-icon-alert"/>
+                            </p:commandButton>
+                            
                         </p:column>
                         <p:column>
                             <f:facet name="header">
@@ -97,9 +113,21 @@
                                              display: block;"/>
                         </p:column>
                     </p:dataTable>
+                    
+                     <p:confirmDialog global="true" showEffect="explode" hideEffect="puff"  >
+                        <p:commandButton value="Abbrechen" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                        <p:commandButton value="Löschen" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                    </p:confirmDialog>
+                    
                 </h:form>
             </f:view>
-
+           
+            
+            <h:form>
+                <p:commandButton value="Beispielbenutzer einfügen" action="#{userAdministrationBean.addExampleData()}" ajax="false" />
+            </h:form>
+            
+            
         </main>
 
     </h:body>

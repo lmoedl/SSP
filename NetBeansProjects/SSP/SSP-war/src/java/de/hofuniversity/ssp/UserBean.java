@@ -8,18 +8,22 @@ package de.hofuniversity.ssp;
 import de.hofuniversity.ssp.beans.UserEntityFacadeRemote;
 import de.hofuniversity.ssp.entities.CustomerEntity;
 import de.hofuniversity.ssp.enums.Role;
+import de.hofuniversity.ssp.security.HashAlgorithm;
 import java.io.Serializable;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.enterprise.context.Dependent;
+import javax.enterprise.context.RequestScoped;
 import javax.enterprise.context.SessionScoped;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 
 /**
  *
  * @author lothar
  */
 @Named(value = "userBean")
-@SessionScoped
+@RequestScoped
 public class UserBean implements Serializable{
 
     @EJB
@@ -81,12 +85,12 @@ public class UserBean implements Serializable{
         + " email: " + email + " password: " + password 
         + " streetAddress: " + streetAddress + 
                 " zipCode: " + zipCode + " city: " + city);
-        
+        if(userEntityFacade.findUserByEmail(email).isEmpty()){
         CustomerEntity entity = new CustomerEntity();
         entity.setCity(city);
         entity.setEmail(email);
         entity.setName(name);
-        entity.setPassword(password);
+        entity.setPassword(HashAlgorithm.getPasswordHash(password));
         entity.setPrename(prename);
         entity.setStreetAddress(streetAddress);
         entity.setZipCode(zipCode);
@@ -95,7 +99,13 @@ public class UserBean implements Serializable{
         if(!isEdit){
         entity.setIsFleaMarket(true);
         entity.setIsLicencePlate(true);
+        
+        if(!userEntityFacade.findAll().isEmpty()){
         entity.setUserRole(Role.USER.toString());
+        }else{
+           entity.setUserRole(Role.ADMIN.toString()); 
+           entity.setId(1);
+        }
         
         userEntityFacade.create(entity);
         }else{
@@ -109,9 +119,13 @@ public class UserBean implements Serializable{
             return "userAdministration";
         }
         
-        return "/login.xhtml";
+        return "/login.xhtml?faces-redirect=true";
+        }else{
+             FacesContext context = FacesContext.getCurrentInstance();
+             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Diese E-Mail Adresse existiert bereits!", "Diese E-Mail Adresse existiert bereits!"));
+        }
         //?faces-redirect=true
-        
+        return "";
     }
 
     public boolean isIsEdit() {

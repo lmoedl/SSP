@@ -5,9 +5,6 @@
  */
 package de.hofuniversity.ssp.beans;
 
-import de.hofuniversity.ssp.entities.CustomerEntity;
-import de.hofuniversity.ssp.entities.CustomerEntity_;
-import de.hofuniversity.ssp.entities.FleaMarketEntity;
 import de.hofuniversity.ssp.entities.LicencePlateEntity;
 import de.hofuniversity.ssp.entities.LicencePlateEntity_;
 import java.util.Date;
@@ -18,9 +15,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaDelete;
 import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Join;
 import javax.persistence.criteria.Root;
-import javax.persistence.criteria.SetJoin;
 
 /**
  *
@@ -113,7 +108,7 @@ public class LicencePlateFacade extends AbstractFacade<LicencePlateEntity> imple
         CriteriaDelete cq = builder.createCriteriaDelete(LicencePlateEntity.class);
         Root<LicencePlateEntity> c = cq.from(LicencePlateEntity.class);
         
-        cq.where(builder.lessThan(c.get("reservationDate"), date));
+        cq.where(builder.lessThan(c.get("reservationDate"), date), builder.notEqual(c.get(LicencePlateEntity_.active), true));
         return getEntityManager().createQuery(cq).executeUpdate();
     }
     

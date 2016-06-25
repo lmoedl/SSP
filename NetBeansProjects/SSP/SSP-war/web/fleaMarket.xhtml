@@ -6,18 +6,22 @@
       xmlns:p="http://primefaces.org/ui">
     <h:head>
         <h:outputStylesheet library="css" name="style.css"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
         <title>Flohmarkt</title>
     </h:head>
     <h:body>
         <nav>
-            <h:form>
+              <h:form>
                 <p:menubar>
                     <p:menuitem value="Home" outcome="/index" icon="fa fa-fw fa-home"/>
-                    <p:menuitem value="Kennzeichen" outcome="/licencePlate" icon="fa fa-fw fa-car"/>
-                    <p:menuitem value="Flohmarkt" outcome="/fleaMarket" icon="fa fa-fw fa-medium"/>
+                    <p:menuitem value="Kennzeichen" outcome="/licencePlate" icon="fa fa-fw fa-car" />
+                    <p:menuitem value="Flohmarkt" outcome="/fleaMarket" icon="fa fa-fw fa-medium" />
                     <p:submenu label="Admin" icon="fa fa-fw fa-adn" rendered="#{loginBean.admin}">
                         <p:menuitem value="Kennzeichenreservierung" outcome="/licencePlateReservation"/>
-                        <p:menuitem value="Standreservierung" outcome="/fleaMarketReservation" />
+                        <p:submenu label="Flohmarktverwaltung">
+                            <p:menuitem value="Standreservierungen" outcome="/fleaMarketReservation" />
+                            <p:menuitem value="Flohmarkt erstellen" outcome="/createFleaMarket" />
+                        </p:submenu>
                         <p:menuitem value="Benutzerverwaltung" outcome="/userAdministration"/>
                     </p:submenu>
 
@@ -29,38 +33,39 @@
 
         <main>
             <h:form>
-                <p:growl id="growl" showDetail="true" sticky="true"/>
-                <p:panel>
+                <p:growl id="growl" showDetail="true"/>
+                <p:panel style="margin-top: 10px">
                     <h:panelGrid id="grid" columns="5" cellpadding="5">
                         <p:outputLabel for="street" value="Straße"/>
                         <p:selectOneMenu id="street" value="#{fleaMarketBean.street}" effect="explode">
-                            <f:selectItem itemLabel="Enoch-Widman-Straße" itemValue="Enoch-Widman-Straße" />
-                            <f:selectItem itemLabel="Dr. Bonnhoefer Straße" itemValue="Dr. Bonnhoefer Straße" />
-                            <f:selectItem itemLabel="Alfons-Goppel-Platz" itemValue="Alfons-Goppel-Platz" />
-                            <f:selectItem itemLabel="Wirthstraße" itemValue="Wirthstraße" />
+
+                            <f:selectItems value="#{fleaMarketBean.fleaMarkets}"/>
                         </p:selectOneMenu>
                         <p:outputLabel for="length" value="Länge"/>
                         <p:selectOneMenu id="length" value="#{fleaMarketBean.length}" effect="explode">
-                            
-                            <f:selectItem itemLabel="1 m" itemValue="1" />
-                            <f:selectItem itemLabel="2 m" itemValue="2" />
+
                             <f:selectItem itemLabel="3 m" itemValue="3" />
                             <f:selectItem itemLabel="4 m" itemValue="4" />
                             <f:selectItem itemLabel="5 m" itemValue="5" />
+                            <f:selectItem itemLabel="6 m" itemValue="6" />
+                            <f:selectItem itemLabel="7 m" itemValue="7" />
                         </p:selectOneMenu>
-                    
-                    <p:commandButton value="Reservieren" action="#{fleaMarketBean.reserve()}" update="growl" rendered="#{loginBean.loggedIn}" ajax="false"/>
+
+                        <p:commandButton value="Reservieren" action="#{fleaMarketBean.reserve()}" update="growl" ajax="false"/>
                     </h:panelGrid>
                 </p:panel>
             </h:form>
 
 
+
             <f:view>
 
 
-                <h:form rendered="#{loginBean.loggedIn}">
-                    <h1><h:outputText value="Ihre bisherigen Standreservierungen"/></h1>
-                    <p:dataTable value="#{fleaMarketBean.fleaMarkets}" var="item" class="tableButton">
+                <h:form rendered="#{loginBean.fleaMarketRight}">
+                  
+                    <h1><h:outputText value="Ihre bisherigen Kennzeichenreservierungen"/></h1>
+                    <p:dataTable value="#{fleaMarketBean.reservedFleaMarketsOfCustomer}" var="item">
+                        
                         <p:column>
                             <f:facet name="header">
                                 <h:outputText value="Reservierungsdatum"/>
@@ -71,27 +76,39 @@
                         </p:column>
                         <p:column>
                             <f:facet name="header">
-                                <h:outputText value="Straße"/>
+                                <h:outputText value="Standort"/>
                             </f:facet>
                             <h:outputText value="#{item.street}"/>
                         </p:column>
                         <p:column>
                             <f:facet name="header">
-                                <h:outputText value="Standlänge (Meter)"/>
+                                <h:outputText value="Standlänge"/>
                             </f:facet>
                             <h:outputText value="#{item.standLength}"/>
                         </p:column>
+
                         <p:column>
                             <f:facet name="header">
                                 <h:outputText value=""/>
                             </f:facet>
-                            <p:commandButton value="Löschen" action="#{fleaMarketBean.deleteReservation(item)}" ajax="false" style="margin: auto;
-                                             display: block;"/>
+
+                            <p:commandButton value="Löschen" action="#{fleaMarketBean.deleteReservation(item)}" update="@form" style="margin: auto;
+                                             display: block;">
+                                <p:confirm header="Löschen" message="Wollen Sie den Flohmarktstand mit der Länge #{item.standLength} Meter in der Straße '#{item.street}' wirklich löschen?" icon="ui-icon-alert"/>
+                            </p:commandButton>
+
+                            
                         </p:column>
                     </p:dataTable>
-                </h:form>
-            </f:view>
 
+                    <p:confirmDialog global="true" showEffect="explode" hideEffect="puff"  >
+                        <p:commandButton value="Abbrechen" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                        <p:commandButton value="Löschen" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                    </p:confirmDialog>
+
+
+                </h:form>   
+            </f:view>
 
 
 

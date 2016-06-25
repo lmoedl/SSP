@@ -6,6 +6,7 @@
     <class>de.hofuniversity.ssp.entities.CustomerEntity</class>
     <class>de.hofuniversity.ssp.entities.FleaMarketEntity</class>
     <class>de.hofuniversity.ssp.entities.LicencePlateEntity</class>
+    <class>de.hofuniversity.ssp.entities.NewFleaMarketEntity</class>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <properties>
       <property name="hibernate.hbm2ddl.auto" value="validate"/>

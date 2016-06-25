@@ -49,7 +49,7 @@ public class UserEntityFacade extends AbstractFacade<CustomerEntity> implements 
      * @return
      */
     @Override
-    public CustomerEntity findUserByEmail(String email){
+    public List<CustomerEntity> findUserByEmail(String email){
         CriteriaBuilder builder =  getEntityManager().getCriteriaBuilder();
         CriteriaQuery cq = builder.createQuery();
         Root<CustomerEntity> c = cq.from(CustomerEntity.class);
@@ -57,7 +57,7 @@ public class UserEntityFacade extends AbstractFacade<CustomerEntity> implements 
         cq.where(builder.equal(c.get("email"), email));
         
 
-        return (CustomerEntity) getEntityManager().createQuery(cq).getResultList().get(0);
+        return (List<CustomerEntity>) getEntityManager().createQuery(cq).getResultList();
     }
     
 }

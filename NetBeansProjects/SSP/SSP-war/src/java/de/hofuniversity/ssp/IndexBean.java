@@ -40,4 +40,8 @@ public class IndexBean {
     public IndexBean() {
     }
     
+    public void addExampleData(){
+        
+    }
+    
 }

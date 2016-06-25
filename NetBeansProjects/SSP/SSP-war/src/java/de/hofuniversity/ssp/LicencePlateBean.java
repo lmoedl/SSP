@@ -34,6 +34,8 @@ public class LicencePlateBean implements Serializable {
 
     @EJB
     private LicencePlateFacadeRemote licencePlateFacade;
+    
+ 
 
     @Inject
     private LoginBean loginBean;
@@ -47,9 +49,9 @@ public class LicencePlateBean implements Serializable {
         FacesContext context = FacesContext.getCurrentInstance();
         
         if(licencePlateFacade.isLicencePlateExist(city, letters.toUpperCase(), numbers)){
-            context.addMessage(null, new FacesMessage("Erfolgreich", "Das Kennzeichen " + city + " " + letters.toUpperCase() + " " + numbers + " ist verfügbar!"));
+            context.addMessage(null, new FacesMessage("Erfolgreich", "Das Kennzeichen \"" + city + ":" + letters.toUpperCase() + ":" + numbers + "\" ist verfügbar!"));
         }else{
-            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_FATAL, "Fehler", "Das Kennzeichen " + city + " " + letters.toUpperCase() + " " + numbers + " ist leider schon vergeben!"));
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_FATAL, "Fehler", "Das Kennzeichen \"" + city + ":" + letters.toUpperCase() + ":" + numbers + "\" ist leider schon vergeben!"));
         }
     }
 
@@ -62,20 +64,27 @@ public class LicencePlateBean implements Serializable {
             entity.setNumbers(numbers);
             entity.setCustomer_id(loginBean.getCustomer().getId());     
             entity.setReservationDate(new Date());
+            entity.setActive(false);
 
             licencePlateFacade.create(entity);
-            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Erfolgreich", "Das Kennzeichen " + city + " " + letters.toUpperCase() + " " + numbers + " ist 2 Tage für Sie reserviert!"));
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Erfolgreich", "Das Kennzeichen \"" + city + ":" + letters.toUpperCase() + ":" + numbers + "\" ist 2 Tage für Sie reserviert!"));
         }else{
-            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_FATAL, "Fehler", "Das Kennzeichen " + city + " " + letters.toUpperCase() + " " + numbers + " ist leider schon vergeben!"));
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_FATAL, "Fehler", "Das Kennzeichen \"" + city + ":" + letters.toUpperCase() + ":" + numbers + "\" ist leider schon vergeben!"));
         }
     }
     
     public List<LicencePlateEntity> getLicencePlates(){
+        Calendar c = Calendar.getInstance();
+        c.add(Calendar.DAY_OF_YEAR, -2);
+        licencePlateFacade.deleteExpiredReservations(c.getTime());
         return licencePlateFacade.getReservedLicencePlatesOfCustomer(loginBean.getCustomer().getId());
     }
     
     public void deleteReservation(LicencePlateEntity entity){
         licencePlateFacade.remove(entity);
+        FacesContext context = FacesContext.getCurrentInstance();
+        context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Erfolgreich", "Das Kennzeichen \"" + entity.getCity() + ":" + entity.getLetters().toUpperCase() + ":" + entity.getNumbers() + "\" wurde erfolgreich gelöscht!"));
+        
     }
     
 

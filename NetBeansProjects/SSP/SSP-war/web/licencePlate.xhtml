@@ -6,18 +6,22 @@
       xmlns:p="http://primefaces.org/ui">
     <h:head>
         <h:outputStylesheet library="css" name="style.css"/>
-        <title>Facelet Title</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <title>Kennzeichenreservierung</title>
     </h:head>
     <h:body>
         <nav>
-            <h:form>
+              <h:form>
                 <p:menubar>
                     <p:menuitem value="Home" outcome="/index" icon="fa fa-fw fa-home"/>
-                    <p:menuitem value="Kennzeichen" outcome="/licencePlate" icon="fa fa-fw fa-car"/>
-                    <p:menuitem value="Flohmarkt" outcome="/fleaMarket" icon="fa fa-fw fa-medium"/>
+                    <p:menuitem value="Kennzeichen" outcome="/licencePlate" icon="fa fa-fw fa-car" />
+                    <p:menuitem value="Flohmarkt" outcome="/fleaMarket" icon="fa fa-fw fa-medium" />
                     <p:submenu label="Admin" icon="fa fa-fw fa-adn" rendered="#{loginBean.admin}">
                         <p:menuitem value="Kennzeichenreservierung" outcome="/licencePlateReservation"/>
-                        <p:menuitem value="Standreservierung" outcome="/fleaMarketReservation" />
+                        <p:submenu label="Flohmarktverwaltung">
+                            <p:menuitem value="Standreservierungen" outcome="/fleaMarketReservation" />
+                            <p:menuitem value="Flohmarkt erstellen" outcome="/createFleaMarket" />
+                        </p:submenu>
                         <p:menuitem value="Benutzerverwaltung" outcome="/userAdministration"/>
                     </p:submenu>
 
@@ -30,35 +34,37 @@
         <main>
 
             <h:form>
-                <p:growl id="growl" showDetail="true" sticky="true"/>
+                <p:growl id="growl" showDetail="true"/>
 
-                <p:panel style="position: relative;">
-                    
-                
+                <p:panel style="position: relative; margin-top: 10px">
+
+
                     <div align="center" style="width: 550px; height: 116px ;background-image: url(#{resource['images:kennzeichen.png']}); background-repeat: no-repeat; margin-left: auto; margin-right: auto; margin-bottom: 10px;">
                         <h:panelGrid id="grid" columns="4" cellpadding="5"  styleClass="topAligned">
 
-                                <p:selectOneMenu id="city" value="#{licencePlateBean.city}" effect="explode">
-                                    <f:selectItem itemLabel="HO" itemValue="HO" />
-                                    <f:selectItem itemLabel="WUN" itemValue="WUN" />
-                                    <f:selectItem itemLabel="REH" itemValue="REH" />
-                                    <f:selectItem itemLabel="SEL" itemValue="SEL" />
-                                    <f:selectItem itemLabel="NAI" itemValue="NAI" />
-                                </p:selectOneMenu>
+                            <p:selectOneMenu id="city" value="#{licencePlateBean.city}" effect="explode" >
+                                <f:selectItem itemLabel="HO" itemValue="HO" />
+                                <f:selectItem itemLabel="WUN" itemValue="WUN" />
+                                <f:selectItem itemLabel="REH" itemValue="REH" />
+                                <f:selectItem itemLabel="SEL" itemValue="SEL" />
+                                <f:selectItem itemLabel="NAI" itemValue="NAI" />
+                            </p:selectOneMenu>
 
-                                <p:inputText id="letters" value="#{licencePlateBean.letters}" required="true" maxlength="2" style="width: 100px"/>
-                                <p:message for="letters"/>
+                            <p:inputText id="letters" value="#{licencePlateBean.letters}" required="true" maxlength="2" style="width: 100px; text-transform: uppercase" requiredMessage="Buchstaben notwendig!" validatorMessage="Buchstaben notwendig!">
+                                <f:validateRegex pattern="[A-Za-z]+"/>
+                            </p:inputText>
+                            
 
-                                <p:inputText id="numbers" value="#{licencePlateBean.numbers}" placeholder="Zahlen eingeben" required="true" maxlength="4" style="width: 150px">
-                                    <f:validateDoubleRange minimum="1" maximum="9999"/>
-                                </p:inputText>
-                                <p:message for="numbers"/>
+                            <p:inputText id="numbers" value="#{licencePlateBean.numbers}" placeholder="Zahlen eingeben" required="true" maxlength="4" style="width: 150px" validatorMessage="Zahlen notwendig!" requiredMessage="Zahlen notwendig!">
+                                <f:validateDoubleRange minimum="1" maximum="9999"/>
+                            </p:inputText>
+                           
 
-                            </h:panelGrid>
-                        </div>
-             
+                        </h:panelGrid>
+                    </div>
+
                     <p:commandButton value="Überprüfen" action="#{licencePlateBean.isLicencePlateExist()}" ajax="false" update="growl"/>
-                    <p:commandButton value="Reservieren" action="#{licencePlateBean.reserveLicencePlate()}" rendered="#{loginBean.loggedIn}" ajax="false" update="growl" style="float: right"/>
+                    <p:commandButton value="Reservieren" action="#{licencePlateBean.reserveLicencePlate()}" rendered="#{loginBean.licencePlateRight}" ajax="false" update="growl" style="float: right"/>
                 </p:panel>
 
             </h:form>
@@ -66,8 +72,8 @@
             <f:view>
 
 
-                <h:form rendered="#{loginBean.loggedIn}">
-                    <h1><h:outputText value="Ihre reservierten Kennzeichen"/></h1>
+                <h:form rendered="#{loginBean.licencePlateRight}">
+                    <h1><h:outputText value="Ihre bisherigen Kennzeichenreservierungen"/></h1>
                     <p:dataTable value="#{licencePlateBean.licencePlates}" var="item">
                         <p:column>
                             <f:facet name="header">
@@ -98,11 +104,23 @@
                         <p:column>
                             <f:facet name="header">
                                 <h:outputText value=""/>
-                            </f:facet>
-                            <p:commandButton value="Löschen" action="#{licencePlateBean.deleteReservation(item)}" ajax="false" style="margin: auto;
-                                             display: block;"/>
+                            </f:facet>                         
+                            
+                             <p:commandButton value="Löschen" action="#{licencePlateBean.deleteReservation(item)}" update="@form" style="margin: auto;
+                                             display: block;">
+                                <p:confirm header="Löschen" message="Wollen Sie das Kennzeichen '#{item.city}:#{item.letters}:#{item.numbers}' wirklich löschen?" icon="ui-icon-alert"/>
+                            </p:commandButton>
+                            
+                            
+                            
                         </p:column>
                     </p:dataTable>
+                    
+                    <p:confirmDialog global="true" showEffect="explode" hideEffect="puff"  >
+                        <p:commandButton value="Abbrechen" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                        <p:commandButton value="Löschen" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                    </p:confirmDialog>
+                    
                 </h:form>
             </f:view>
 

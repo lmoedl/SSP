@@ -5,18 +5,22 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:p="http://primefaces.org/ui">
     <h:head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
         <title>Registrieren</title>
     </h:head>
     <h:body>
         <nav>
-            <h:form>
+              <h:form>
                 <p:menubar>
                     <p:menuitem value="Home" outcome="/index" icon="fa fa-fw fa-home"/>
-                    <p:menuitem value="Kennzeichen" outcome="/licencePlate" icon="fa fa-fw fa-car"/>
-                    <p:menuitem value="Flohmarkt" outcome="/fleaMarket" icon="fa fa-fw fa-medium"/>
+                    <p:menuitem value="Kennzeichen" outcome="/licencePlate" icon="fa fa-fw fa-car" />
+                    <p:menuitem value="Flohmarkt" outcome="/fleaMarket" icon="fa fa-fw fa-medium" />
                     <p:submenu label="Admin" icon="fa fa-fw fa-adn" rendered="#{loginBean.admin}">
                         <p:menuitem value="Kennzeichenreservierung" outcome="/licencePlateReservation"/>
-                        <p:menuitem value="Standreservierung" outcome="/fleaMarketReservation" />
+                        <p:submenu label="Flohmarktverwaltung">
+                            <p:menuitem value="Standreservierungen" outcome="/fleaMarketReservation" />
+                            <p:menuitem value="Flohmarkt erstellen" outcome="/createFleaMarket" />
+                        </p:submenu>
                         <p:menuitem value="Benutzerverwaltung" outcome="/userAdministration"/>
                     </p:submenu>
 
@@ -29,30 +33,44 @@
         <main>
 
             <f:view>
-                <h:form>
+                <h:form style="margin-top: 10px">
+                    <p:growl/>
                     <p:panel>
+
                         <h:panelGrid id="grid" columns="2" cellpadding="5">
+
+                            <p:outputLabel rendered="#{!loginBean.loggedIn}"/>
+                            <p:outputLabel style="font-weight: bold" rendered="#{!loginBean.loggedIn}">Registrieren</p:outputLabel>
+                            <p:outputLabel rendered="#{loginBean.loggedIn}"/>
+                            <p:outputLabel style="font-weight: bold" rendered="#{loginBean.loggedIn}">Benutzer bearbeiten</p:outputLabel>
                             <p:outputLabel for="prename">Vorname</p:outputLabel>
-                            <p:inputText id="prename" value="#{userBean.prename}" required="true"/>
+                            <p:inputText id="prename" value="#{userBean.prename}" required="true" requiredMessage="Vorname ist notwendig!"/>
                             <p:outputLabel for="name">Name</p:outputLabel>
-                            <p:inputText id="name" value="#{userBean.name}" required="true"/>
+                            <p:inputText id="name" value="#{userBean.name}" required="true" requiredMessage="Name ist notwendig!"/>
                             <p:outputLabel for="email">Email</p:outputLabel>
-                            <p:inputText  id="email" value="#{userBean.email}" required="true" label="email">
-                                <!--f:validateRegex pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$"/-->
+                            <p:inputText  id="email" value="#{userBean.email}" required="true" label="email" validatorMessage="Ungültige E-Mail Adresse!" requiredMessage="E-Mail Adresse ist notwendig!">
+                                <f:validateRegex pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$"/>
+
                             </p:inputText>
                             <p:outputLabel for="password" rendered="#{!userBean.isEdit}">Passwort</p:outputLabel>
-                            <p:password  id="password" value="#{userBean.password}" required="true" rendered="#{!userBean.isEdit}"/>
-                            <p:outputLabel for="streetAddress">Straße</p:outputLabel>
-                            <p:inputText id="streetAddress" value="#{userBean.streetAddress}" required="true"/>
+                            <p:password  id="password" value="#{userBean.password}" required="true" rendered="#{!userBean.isEdit}" validatorMessage="Das Passwort muss mindestens 4 Zeichen lang sein!" requiredMessage="Passwort ist notwendig!">
+                                <f:validateLength minimum="4" ></f:validateLength>
+                                
+                            </p:password>
+                            <p:outputLabel for="streetAddress">Straße und Hausnummer</p:outputLabel>
+                            <p:inputText id="streetAddress" value="#{userBean.streetAddress}" required="true" requiredMessage="Straße und Hausnummer ist notwendig!"/>
                             <p:outputLabel for="zipCode">Postleitzahl</p:outputLabel>
-                            <p:inputText id="zipCode" value="#{userBean.zipCode}" required="true"/>
-                            <p:outputLabel for="city">Stadt</p:outputLabel>
-                            <p:inputText id="city" value="#{userBean.city}" required="true"/>
-                            <p:outputLabel value="Flohmarkt bearbeiten" rendered="#{loginBean.admin}"/>
-                            <p:selectBooleanCheckbox value="#{userBean.isFleaMarktEdit}" rendered="#{loginBean.admin}"/>
-                            <p:outputLabel value="Kennzeichen bearbeiten" rendered="#{loginBean.admin}"/>
+                            <p:inputText id="zipCode" value="#{userBean.zipCode}" required="true" requiredMessage="Postleitzahl ist notwendig!" validatorMessage="Die Postleitzahl muss 5 Zeichen lang sein!" maxlength="5" converterMessage="Postleitzahl muss eine Zahl sein!">
+                            <f:validateLength minimum="5" ></f:validateLength>
+                            </p:inputText>
+                            <p:outputLabel for="city">Ort</p:outputLabel>
+                            <p:inputText id="city" value="#{userBean.city}" required="true" requiredMessage="Ort ist notwendig!"/>
+                            <p:outputLabel value="Kennzeichen freischalten" rendered="#{loginBean.admin}"/>
                             <p:selectBooleanCheckbox value="#{userBean.isLicencePlateEdit}" rendered="#{loginBean.admin}"/>
-                            <p:commandButton value="Anmelden" action="#{userBean.submit()}" ajax="false" rendered="#{!loginBean.loggedIn}"/>
+                            <p:outputLabel value="Flohmarkt freischalten" rendered="#{loginBean.admin}"/>
+                            <p:selectBooleanCheckbox value="#{userBean.isFleaMarktEdit}" rendered="#{loginBean.admin}"/>
+
+                            <p:commandButton value="Registrieren" action="#{userBean.submit()}" ajax="false" rendered="#{!loginBean.loggedIn}"/>
                             <p:commandButton value="Speichern" action="#{userBean.submit()}" ajax="false" rendered="#{loginBean.admin}"/>
                         </h:panelGrid>
                     </p:panel>
@@ -60,6 +78,11 @@
             </f:view>
 
         </main>
+
+
+
+
     </h:body>
+
 </html>
 

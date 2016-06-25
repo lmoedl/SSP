@@ -6,18 +6,22 @@
       xmlns:p="http://primefaces.org/ui">
     <h:head>
         <h:outputStylesheet library="css" name="style.css"/>
-        <title>Facelet Title</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <title>Flohmarktadministration</title>
     </h:head>
     <h:body>
         <nav>
-        <h:form>
+            <h:form>
                 <p:menubar>
                     <p:menuitem value="Home" outcome="/index" icon="fa fa-fw fa-home"/>
-                    <p:menuitem value="Kennzeichen" outcome="/licencePlate" icon="fa fa-fw fa-car"/>
-                    <p:menuitem value="Flohmarkt" outcome="/fleaMarket" icon="fa fa-fw fa-medium"/>
+                    <p:menuitem value="Kennzeichen" outcome="/licencePlate" icon="fa fa-fw fa-car" />
+                    <p:menuitem value="Flohmarkt" outcome="/fleaMarket" icon="fa fa-fw fa-medium" />
                     <p:submenu label="Admin" icon="fa fa-fw fa-adn" rendered="#{loginBean.admin}">
                         <p:menuitem value="Kennzeichenreservierung" outcome="/licencePlateReservation"/>
-                        <p:menuitem value="Standreservierung" outcome="/fleaMarketReservation" />
+                        <p:submenu label="Flohmarktverwaltung">
+                            <p:menuitem value="Standreservierungen" outcome="/fleaMarketReservation" />
+                            <p:menuitem value="Flohmarkt erstellen" outcome="/createFleaMarket" />
+                        </p:submenu>
                         <p:menuitem value="Benutzerverwaltung" outcome="/userAdministration"/>
                     </p:submenu>
 
@@ -26,14 +30,15 @@
                 </p:menubar>
             </h:form>
         </nav>
-        
+
         <main>
-            
+
             <f:view>
 
 
                 <h:form>
-                    <h1><h:outputText value="Alle Flohmarktstandreservierungen"/></h1>
+                    <p:growl id="growl" showDetail="true"/>
+                    <h1><h:outputText value="Alle Standreservierungen"/></h1>
                     <p:dataTable value="#{fleaMarketReservationBean.reservedFleaMarkets}" var="item">
                         <p:column>
                             <f:facet name="header">
@@ -59,17 +64,38 @@
                             <f:facet name="header">
                                 <h:outputText value=""/>
                             </f:facet>
-                            <p:commandButton value="Löschen" action="#{fleaMarketReservationBean.deleteFleaMarketReservation(item)}" ajax="false" style="margin: auto;
-                                             display: block;"/>
+                            <p:commandButton value="Aktivieren" action="#{fleaMarketReservationBean.setActive(item)}" ajax="false" style="margin: auto;
+                                             display: block;" rendered="#{!item.active}"/>
+                            <p:commandButton value="Deaktivieren" action="#{fleaMarketReservationBean.setActive(item)}" ajax="false" style="margin: auto;
+                                             display: block;" rendered="#{item.active}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value=""/>
+                            </f:facet>                  
+                            
+                            <p:commandButton value="Löschen" action="#{fleaMarketReservationBean.deleteFleaMarketReservation(item)}" update="@form" style="margin: auto;
+                                             display: block;">
+                                <p:confirm header="Löschen" message="Wollen Sie den Flohmarktstand mit der Länge #{item.standLength} Meter in der Straße '#{item.street}' wirklich löschen?" icon="ui-icon-alert"/>
+                            </p:commandButton>
+                            
                         </p:column>
                     </p:dataTable>
-                    <p:commandButton action="#{fleaMarketReservationBean.deleteExpiredReservations()}" value="Ablgelaufene löschen" style="margin-top: 10px"/>
+                    <p:commandButton type="button"  value="Ablgelaufene löschen" style="margin-top: 10px" onclick="PF('dlg3').show();"/>
+                    <p:dialog header="Löschen" widgetVar="dlg3" showEffect="explode" hideEffect="puff" height="100">
+                        <h:outputText value="Wollen Sie alle abgelaufenen Standreservierungen wirklich löschen?" /><br />
+                        <p:commandButton action="#{fleaMarketReservationBean.deleteExpiredReservations()}" value="Löschen" style="margin-top: 10px" update="growl" onclick="PF('dlg3').hide();" ajax="false"/>
+                    </p:dialog>
+
+                    <p:confirmDialog global="true" showEffect="explode" hideEffect="puff"  >
+                        <p:commandButton value="Abbrechen" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                        <p:commandButton value="Löschen" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                    </p:confirmDialog>
+                    
                 </h:form>
             </f:view>
-            
-            
         </main>
-        
+
     </h:body>
 </html>
 
