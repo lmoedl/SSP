@@ -40,6 +40,18 @@ public class LicencePlateEntity implements Serializable {
     @Column(name = "reservationDate")
     @Temporal(TemporalType.DATE)
     private Date reservationDate;
+    @Column(name = "active")
+    private boolean active;
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+    
+    
 
     public Date getReservationDate() {
         return reservationDate;

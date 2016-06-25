@@ -6,6 +6,8 @@
 package de.hofuniversity.ssp.entities;
 
 import java.io.Serializable;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -18,76 +20,29 @@ import javax.persistence.Temporal;
  *
  * @author lothar
  */
-@Entity(name = "fleaMarket")
-public class FleaMarketEntity implements Serializable {
+@Entity(name = "newFleaMarket")
+public class NewFleaMarketEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     
+    @Column(name = "city")
+    private String city;
     @Column(name = "street")
     private String street;
-    
-    @Column(name = "standLength" )
-    private int standLength;
-    
-    @Column(name = "reservationDate")
-    @Temporal(javax.persistence.TemporalType.DATE)
-    private Date reservationDate;
-    
-    @Column(name = "customer_id")
-    private long customer_id;
-    
-    @Column(name = "active")
-    private boolean active;
-    
     @Column(name = "fleaMarketDate")
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date fleaMarketDate;
 
-    public boolean isActive() {
-        return active;
+    public String getCity() {
+        return city;
     }
 
-    public void setActive(boolean active) {
-        this.active = active;
+    public void setCity(String city) {
+        this.city = city;
     }
-
-    public Date getFleaMarketDate() {
-        return fleaMarketDate;
-    }
-
-    public void setFleaMarketDate(Date fleaMarketDate) {
-        this.fleaMarketDate = fleaMarketDate;
-    }
-    
-    
-    
-    
-    
-    
-    
-
-    public long getCustomer_id() {
-        return customer_id;
-    }
-
-    public void setCustomer_id(long customer_id) {
-        this.customer_id = customer_id;
-    }
-    
-    
-
-    public Date getReservationDate() {
-        return reservationDate;
-    }
-
-    public void setReservationDate(Date reservationDate) {
-        this.reservationDate = reservationDate;
-    }
-    
-    
 
     public String getStreet() {
         return street;
@@ -97,15 +52,13 @@ public class FleaMarketEntity implements Serializable {
         this.street = street;
     }
 
-    public int getStandLength() {
-        return standLength;
+    public Date getFleaMarketDate() {
+        return fleaMarketDate;
     }
 
-    public void setStandLength(int standLength) {
-        this.standLength = standLength;
-    }
-    
-    
+    public void setFleaMarketDate(Date fleaMarketDate) {
+        this.fleaMarketDate = fleaMarketDate;
+    } 
 
     public Long getId() {
         return id;
@@ -125,10 +78,10 @@ public class FleaMarketEntity implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof FleaMarketEntity)) {
+        if (!(object instanceof NewFleaMarketEntity)) {
             return false;
         }
-        FleaMarketEntity other = (FleaMarketEntity) object;
+        NewFleaMarketEntity other = (NewFleaMarketEntity) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -137,7 +90,8 @@ public class FleaMarketEntity implements Serializable {
 
     @Override
     public String toString() {
-        return "de.hofuniversity.ssp.entities.FleaMarket[ id=" + id + " ]";
+        DateFormat format = new SimpleDateFormat("dd.MM.yyyy");
+        return city + " - " + street + " - " + format.format(fleaMarketDate);
     }
     
 }

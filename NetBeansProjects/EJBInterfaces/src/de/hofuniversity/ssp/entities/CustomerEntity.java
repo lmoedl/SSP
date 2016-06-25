@@ -45,15 +45,24 @@ public class CustomerEntity implements Serializable {
     private int zipCode;
     @Column(name = "city")
     private String city;
-    
     @Column(name = "isFleaMarket")
     private boolean isFleaMarket;
-    
     @Column(name = "isLicencePlate")
     private boolean isLicencePlate;
-    
     @Column(name = "userRole")
     private String userRole;
+    
+    private String licencePlateRight;
+    private String fleaMarketRight;
+
+    public String getLicencePlateRight() {
+        return isLicencePlate ? "Kennzeichen" : "";
+    }
+
+    public String getFleaMarketRight() {
+        return isFleaMarket ? "Flohmarkt" : "";
+    }
+    
 
     public String getUserRole() {
         return userRole;
@@ -89,7 +98,7 @@ public class CustomerEntity implements Serializable {
         this.isLicencePlate = isLicencePlate;
     }
     
-    
+
     
     
     public String getEmail() {
