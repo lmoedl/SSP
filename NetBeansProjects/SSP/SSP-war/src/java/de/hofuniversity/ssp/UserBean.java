@@ -17,6 +17,7 @@ import javax.enterprise.context.RequestScoped;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import javax.inject.Inject;
 
 /**
  *
@@ -24,12 +25,10 @@ import javax.faces.context.FacesContext;
  */
 @Named(value = "userBean")
 @RequestScoped
-public class UserBean implements Serializable{
+public class UserBean implements Serializable {
 
     @EJB
     private UserEntityFacadeRemote userEntityFacade;
-
-     
 
     private String prename;
     private String name;
@@ -40,15 +39,18 @@ public class UserBean implements Serializable{
     private String city;
     private boolean isFleaMarktEdit;
     private boolean isLicencePlateEdit;
-    
+
     private boolean isEdit;
     private String userRole;
     private long id;
 
+    @Inject
+    private UserAdministrationBean administrationBean;
+
     public UserBean() {
         isEdit = false;
     }
-        
+
     public UserBean(CustomerEntity entity) {
         this.prename = entity.getPrename();
         this.name = entity.getName();
@@ -60,9 +62,9 @@ public class UserBean implements Serializable{
         this.isFleaMarktEdit = entity.isIsFleaMarket();
         this.isLicencePlateEdit = entity.isIsLicencePlate();
     }
-    
-    public void edit(CustomerEntity entity){
-         this.prename = entity.getPrename();
+
+    public void edit(CustomerEntity entity) {
+        this.prename = entity.getPrename();
         this.name = entity.getName();
         this.email = entity.getEmail();
         this.password = entity.getPassword();
@@ -70,62 +72,77 @@ public class UserBean implements Serializable{
         this.zipCode = entity.getZipCode();
         this.city = entity.getCity();
         this.isFleaMarktEdit = entity.isIsFleaMarket();
-        this.isLicencePlateEdit = entity.isIsLicencePlate(); 
+        this.isLicencePlateEdit = entity.isIsLicencePlate();
         this.userRole = entity.getUserRole();
         this.id = entity.getId();
         
+        System.out.println("edit -> password: " + entity.getPassword() + " role: " + entity.getUserRole() + " id: " + entity.getId());
+
         isEdit = true;
     }
-    
-    
-    
-    
-    public String submit(){
+
+    public String submit() {
         System.out.println("prename: " + prename + " name: " + name
-        + " email: " + email + " password: " + password 
-        + " streetAddress: " + streetAddress + 
-                " zipCode: " + zipCode + " city: " + city);
-        if(userEntityFacade.findUserByEmail(email).isEmpty()){
+                + " email: " + email + " password: " + password
+                + " streetAddress: " + streetAddress
+                + " zipCode: " + zipCode + " city: " + city);
+        if (userEntityFacade.findUserByEmail(email).isEmpty()) {
+            CustomerEntity entity = new CustomerEntity();
+            entity.setCity(city);
+            entity.setEmail(email);
+            entity.setName(name);
+            entity.setPassword(HashAlgorithm.getPasswordHash(password));
+            entity.setPrename(prename);
+            entity.setStreetAddress(streetAddress);
+            entity.setZipCode(zipCode);
+
+            entity.setIsFleaMarket(true);
+            entity.setIsLicencePlate(true);
+
+            if (!userEntityFacade.findAll().isEmpty()) {
+                entity.setUserRole(Role.USER.toString());
+            } else {
+                entity.setUserRole(Role.ADMIN.toString());
+                entity.setId(1);
+            }
+
+            userEntityFacade.create(entity);
+
+            return "/login.xhtml?faces-redirect=true";
+        } else {
+            FacesContext context = FacesContext.getCurrentInstance();
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Diese E-Mail Adresse existiert bereits!", "Diese E-Mail Adresse existiert bereits!"));
+        }
+        //?faces-redirect=true
+
+        return "";
+    }
+
+    public String submitEdit() {
         CustomerEntity entity = new CustomerEntity();
         entity.setCity(city);
         entity.setEmail(email);
         entity.setName(name);
-        entity.setPassword(HashAlgorithm.getPasswordHash(password));
+        entity.setPassword(administrationBean.getCe().getPassword());
         entity.setPrename(prename);
         entity.setStreetAddress(streetAddress);
         entity.setZipCode(zipCode);
+
+        entity.setIsFleaMarket(isFleaMarktEdit);
+        entity.setIsLicencePlate(isLicencePlateEdit);
+        entity.setUserRole(administrationBean.getCe().getUserRole());
+        entity.setId(administrationBean.getCe().getId());
+        userEntityFacade.edit(entity);
+        isEdit = false;
         
+        /*System.out.println("prename: " + prename + " name: " + name
+                + " email: " + email + " password: " + password
+                + " streetAddress: " + streetAddress
+                + " zipCode: " + zipCode + " city: " + city + " id: " + id + " role: " + userRole);*/
+        System.out.println("userAdministrationBean -> password: " + administrationBean.getCe().getPassword() + " role: " + administrationBean.getCe().getUserRole() + " id: " + administrationBean.getCe().getId());
         
-        if(!isEdit){
-        entity.setIsFleaMarket(true);
-        entity.setIsLicencePlate(true);
-        
-        if(!userEntityFacade.findAll().isEmpty()){
-        entity.setUserRole(Role.USER.toString());
-        }else{
-           entity.setUserRole(Role.ADMIN.toString()); 
-           entity.setId(1);
-        }
-        
-        userEntityFacade.create(entity);
-        }else{
-            entity.setIsFleaMarket(isFleaMarktEdit);
-            entity.setIsLicencePlate(isLicencePlateEdit);
-            entity.setUserRole(userRole);
-            entity.setId(id);
-            userEntityFacade.edit(entity);
-            isEdit = false;
-            
-            return "userAdministration";
-        }
-        
-        return "/login.xhtml?faces-redirect=true";
-        }else{
-             FacesContext context = FacesContext.getCurrentInstance();
-             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Diese E-Mail Adresse existiert bereits!", "Diese E-Mail Adresse existiert bereits!"));
-        }
-        //?faces-redirect=true
-        return "";
+        return "userAdministration";
+
     }
 
     public boolean isIsEdit() {
@@ -151,8 +168,6 @@ public class UserBean implements Serializable{
     public void setId(long id) {
         this.id = id;
     }
-    
-    
 
     public boolean isIsFleaMarktEdit() {
         return isFleaMarktEdit;
@@ -170,8 +185,6 @@ public class UserBean implements Serializable{
         this.isLicencePlateEdit = isLicencePlateEdit;
     }
 
-    
-    
     public String getPrename() {
         return prename;
     }
@@ -227,6 +240,5 @@ public class UserBean implements Serializable{
     public void setCity(String city) {
         this.city = city;
     }
-    
-    
+
 }

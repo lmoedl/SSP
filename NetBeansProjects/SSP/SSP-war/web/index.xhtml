@@ -17,7 +17,7 @@
                     <p:menuitem value="Kennzeichen" outcome="/licencePlate" icon="fa fa-fw fa-car" />
                     <p:menuitem value="Flohmarkt" outcome="/fleaMarket" icon="fa fa-fw fa-medium" />
                     <p:submenu label="Admin" icon="fa fa-fw fa-adn" rendered="#{loginBean.admin}">
-                        <p:menuitem value="Kennzeichenreservierung" outcome="/licencePlateReservation"/>
+                        <p:menuitem value="Kennzeichenreservierungen" outcome="/licencePlateReservation"/>
                         <p:submenu label="Flohmarktverwaltung">
                             <p:menuitem value="Standreservierungen" outcome="/fleaMarketReservation" />
                             <p:menuitem value="Flohmarkt erstellen" outcome="/createFleaMarket" />
@@ -26,7 +26,7 @@
                     </p:submenu>
 
                     <p:menuitem value="Login"  outcome="/login" icon="fa fa-fw fa-lock" style="position: absolute; right: 10px" rendered="#{!loginBean.loggedIn}"/>
-                    <p:menuitem value="Logout" icon="fa fa-fw fa-lock" style="position: absolute; right: 10px" actionListener="#{loginBean.logout()}" rendered="#{loginBean.loggedIn}" ajax="false"/>
+                    <p:menuitem value="Logout" icon="fa fa-fw fa-lock" style="position: absolute; right: 10px" action="#{loginBean.logout()}" rendered="#{loginBean.loggedIn}" ajax="false"/>
                 </p:menubar>
             </h:form>
         </nav>

@@ -10,13 +10,13 @@
     </h:head>
     <h:body>
         <nav>
-              <h:form>
+            <h:form>
                 <p:menubar>
                     <p:menuitem value="Home" outcome="/index" icon="fa fa-fw fa-home"/>
                     <p:menuitem value="Kennzeichen" outcome="/licencePlate" icon="fa fa-fw fa-car" />
                     <p:menuitem value="Flohmarkt" outcome="/fleaMarket" icon="fa fa-fw fa-medium" />
                     <p:submenu label="Admin" icon="fa fa-fw fa-adn" rendered="#{loginBean.admin}">
-                        <p:menuitem value="Kennzeichenreservierung" outcome="/licencePlateReservation"/>
+                        <p:menuitem value="Kennzeichenreservierungen" outcome="/licencePlateReservation"/>
                         <p:submenu label="Flohmarktverwaltung">
                             <p:menuitem value="Standreservierungen" outcome="/fleaMarketReservation" />
                             <p:menuitem value="Flohmarkt erstellen" outcome="/createFleaMarket" />
@@ -25,7 +25,7 @@
                     </p:submenu>
 
                     <p:menuitem value="Login"  outcome="/login" icon="fa fa-fw fa-lock" style="position: absolute; right: 10px" rendered="#{!loginBean.loggedIn}"/>
-                    <p:menuitem value="Logout" icon="fa fa-fw fa-lock" style="position: absolute; right: 10px" actionListener="#{loginBean.logout()}" rendered="#{loginBean.loggedIn}" ajax="false"/>
+                    <p:menuitem value="Logout" icon="fa fa-fw fa-lock" style="position: absolute; right: 10px" action="#{loginBean.logout()}" rendered="#{loginBean.loggedIn}" ajax="false"/>
                 </p:menubar>
             </h:form>
         </nav>
@@ -55,13 +55,13 @@
                             <p:outputLabel for="password" rendered="#{!userBean.isEdit}">Passwort</p:outputLabel>
                             <p:password  id="password" value="#{userBean.password}" required="true" rendered="#{!userBean.isEdit}" validatorMessage="Das Passwort muss mindestens 4 Zeichen lang sein!" requiredMessage="Passwort ist notwendig!">
                                 <f:validateLength minimum="4" ></f:validateLength>
-                                
+
                             </p:password>
                             <p:outputLabel for="streetAddress">Straße und Hausnummer</p:outputLabel>
                             <p:inputText id="streetAddress" value="#{userBean.streetAddress}" required="true" requiredMessage="Straße und Hausnummer ist notwendig!"/>
                             <p:outputLabel for="zipCode">Postleitzahl</p:outputLabel>
                             <p:inputText id="zipCode" value="#{userBean.zipCode}" required="true" requiredMessage="Postleitzahl ist notwendig!" validatorMessage="Die Postleitzahl muss 5 Zeichen lang sein!" maxlength="5" converterMessage="Postleitzahl muss eine Zahl sein!">
-                            <f:validateLength minimum="5" ></f:validateLength>
+                                <f:validateLength minimum="5" ></f:validateLength>
                             </p:inputText>
                             <p:outputLabel for="city">Ort</p:outputLabel>
                             <p:inputText id="city" value="#{userBean.city}" required="true" requiredMessage="Ort ist notwendig!"/>
@@ -69,9 +69,8 @@
                             <p:selectBooleanCheckbox value="#{userBean.isLicencePlateEdit}" rendered="#{loginBean.admin}"/>
                             <p:outputLabel value="Flohmarkt freischalten" rendered="#{loginBean.admin}"/>
                             <p:selectBooleanCheckbox value="#{userBean.isFleaMarktEdit}" rendered="#{loginBean.admin}"/>
-
                             <p:commandButton value="Registrieren" action="#{userBean.submit()}" ajax="false" rendered="#{!loginBean.loggedIn}"/>
-                            <p:commandButton value="Speichern" action="#{userBean.submit()}" ajax="false" rendered="#{loginBean.admin}"/>
+                            <p:commandButton value="Speichern" action="#{userBean.submitEdit()}" ajax="false" rendered="#{loginBean.admin}"/>
                         </h:panelGrid>
                     </p:panel>
                 </h:form>

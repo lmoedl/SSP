@@ -10,13 +10,13 @@
     </h:head>
     <h:body>
         <nav>
-               <h:form>
+            <h:form>
                 <p:menubar>
                     <p:menuitem value="Home" outcome="/index" icon="fa fa-fw fa-home"/>
                     <p:menuitem value="Kennzeichen" outcome="/licencePlate" icon="fa fa-fw fa-car" />
                     <p:menuitem value="Flohmarkt" outcome="/fleaMarket" icon="fa fa-fw fa-medium" />
                     <p:submenu label="Admin" icon="fa fa-fw fa-adn" rendered="#{loginBean.admin}">
-                        <p:menuitem value="Kennzeichenreservierung" outcome="/licencePlateReservation"/>
+                        <p:menuitem value="Kennzeichenreservierungen" outcome="/licencePlateReservation"/>
                         <p:submenu label="Flohmarktverwaltung">
                             <p:menuitem value="Standreservierungen" outcome="/fleaMarketReservation" />
                             <p:menuitem value="Flohmarkt erstellen" outcome="/createFleaMarket" />
@@ -25,7 +25,7 @@
                     </p:submenu>
 
                     <p:menuitem value="Login"  outcome="/login" icon="fa fa-fw fa-lock" style="position: absolute; right: 10px" rendered="#{!loginBean.loggedIn}"/>
-                    <p:menuitem value="Logout" icon="fa fa-fw fa-lock" style="position: absolute; right: 10px" actionListener="#{loginBean.logout()}" rendered="#{loginBean.loggedIn}" ajax="false"/>
+                    <p:menuitem value="Logout" icon="fa fa-fw fa-lock" style="position: absolute; right: 10px" action="#{loginBean.logout()}" rendered="#{loginBean.loggedIn}" ajax="false"/>
                 </p:menubar>
             </h:form>
         </nav>
@@ -37,12 +37,14 @@
                     <p:growl id="growl" showDetail="true"/>
                     <p:panel>
                         <h:panelGrid id="grid" columns="2" cellpadding="5">
+                            <p:outputLabel/>
+                            <p:outputLabel style="font-weight: bold">Flohmarkt erstellen</p:outputLabel>
                             <p:outputLabel value="Stadt" for="city" />
-                            <p:inputText id="city" value="#{createFleaMarketBean.city}" />
+                            <p:inputText id="city" value="#{createFleaMarketBean.city}"  required="true" requiredMessage="Stadt ist notwendig!"/>
                             <p:outputLabel value="Straße" for="street"/>
-                            <p:inputText id="street" value="#{createFleaMarketBean.street}" />
+                            <p:inputText id="street" value="#{createFleaMarketBean.street}" required="true" requiredMessage="Straße ist notwendig!"/>
                             <p:outputLabel for="date" value="Datum" />
-                            <p:calendar value="#{createFleaMarketBean.date}" effect="explode" locale="de" timeZone="MET" showTodayButton="true" pattern="dd.MM.yyyy" navigator="true" id="date" mindate="#{createFleaMarketBean.actualDate}" />
+                            <p:calendar value="#{createFleaMarketBean.date}" effect="explode" locale="de" timeZone="MET" showTodayButton="true" pattern="dd.MM.yyyy" navigator="true" id="date" mindate="#{createFleaMarketBean.actualDate}" required="true" requiredMessage="Datum ist notwendig!"/>
                             <p:commandButton value="Speichern" action="#{createFleaMarketBean.createFleaMarket()}" ajax="false" update="growl"/>
                         </h:panelGrid>
                     </p:panel>

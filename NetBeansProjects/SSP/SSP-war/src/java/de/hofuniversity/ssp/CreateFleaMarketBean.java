@@ -43,7 +43,7 @@ public class CreateFleaMarketBean implements Serializable {
     }
     
     
-    public void createFleaMarket(){
+    public String createFleaMarket(){
         NewFleaMarketEntity entity = new NewFleaMarketEntity();
         entity.setCity(city);
         entity.setStreet(street);
@@ -54,6 +54,8 @@ public class CreateFleaMarketBean implements Serializable {
         
         FacesContext context = FacesContext.getCurrentInstance();
         context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Erfolgreich", "Der Flohmarkt in der Stadt \"" + city + "\" in der Straße \"" + street + "\" am " + new SimpleDateFormat("dd.MM.yyyy").format(date) + " wurde erfolgreich erstellet!"));
+        
+        return "fleaMarketReservation";
     }
 
     public String getStreet() {

@@ -49,3 +49,26 @@ and open the template in the editor.
 .centeredMenuBar .ui-menu-list {
     display: inline-block;
 }
+
+.fleaMarketTable{
+    background-color: red;
+
+    
+    border: 2px solid blue;
+    
+    
+    
+}
+
+.reservedStand{
+    background-color: aqua;
+    color: aqua;
+    border: 3px solid black;
+}
+
+.notReservedStand{
+    background-color: wheat;
+    color: wheat;
+    border: 3px solid black;
+}
+

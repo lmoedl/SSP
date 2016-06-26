@@ -15,6 +15,8 @@ import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
 import java.util.List;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 
 /**
@@ -31,6 +33,8 @@ public class UserAdministrationBean implements Serializable {
     @Inject
     private UserBean userBean;
     
+    private CustomerEntity ce;
+    
     public UserAdministrationBean() {
     }
     
@@ -40,13 +44,32 @@ public class UserAdministrationBean implements Serializable {
     
     public void deleteUser(CustomerEntity customerEntity){
         userEntityFacade.remove(customerEntity);
+        
+        FacesContext context = FacesContext.getCurrentInstance();
+        context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Erfolgreich", "Der Benutzer \"" + customerEntity.getPrename() + " " + customerEntity.getName() + "\" wurde erfolgreich gelöscht!"));
     }
     
     public String editUser(CustomerEntity entity){
         userBean.edit(entity);
+        ce = entity;
+        
+        System.out.println("password: " + entity.getPassword() + " id: " + entity.getId() + " role: " + entity.getUserRole());
         
         return "register";
     }
+
+    public CustomerEntity getCe() {
+        return ce;
+    }
+
+    public void setCe(CustomerEntity ce) {
+        this.ce = ce;
+    }
+    
+    
+    
+    
+    
     
     public void addExampleData(){
         CustomerEntity entity1 = new CustomerEntity();

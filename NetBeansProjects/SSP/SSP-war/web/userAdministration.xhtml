@@ -11,13 +11,13 @@
     </h:head>
     <h:body>
         <nav>
-              <h:form>
+            <h:form>
                 <p:menubar>
                     <p:menuitem value="Home" outcome="/index" icon="fa fa-fw fa-home"/>
                     <p:menuitem value="Kennzeichen" outcome="/licencePlate" icon="fa fa-fw fa-car" />
                     <p:menuitem value="Flohmarkt" outcome="/fleaMarket" icon="fa fa-fw fa-medium" />
                     <p:submenu label="Admin" icon="fa fa-fw fa-adn" rendered="#{loginBean.admin}">
-                        <p:menuitem value="Kennzeichenreservierung" outcome="/licencePlateReservation"/>
+                        <p:menuitem value="Kennzeichenreservierungen" outcome="/licencePlateReservation"/>
                         <p:submenu label="Flohmarktverwaltung">
                             <p:menuitem value="Standreservierungen" outcome="/fleaMarketReservation" />
                             <p:menuitem value="Flohmarkt erstellen" outcome="/createFleaMarket" />
@@ -26,7 +26,7 @@
                     </p:submenu>
 
                     <p:menuitem value="Login"  outcome="/login" icon="fa fa-fw fa-lock" style="position: absolute; right: 10px" rendered="#{!loginBean.loggedIn}"/>
-                    <p:menuitem value="Logout" icon="fa fa-fw fa-lock" style="position: absolute; right: 10px" actionListener="#{loginBean.logout()}" rendered="#{loginBean.loggedIn}" ajax="false"/>
+                    <p:menuitem value="Logout" icon="fa fa-fw fa-lock" style="position: absolute; right: 10px" action="#{loginBean.logout()}" rendered="#{loginBean.loggedIn}" ajax="false"/>
                 </p:menubar>
             </h:form>
         </nav>
@@ -36,6 +36,7 @@
 
 
                 <h:form rendered="#{loginBean.admin}">
+                    <p:growl id="growl" showDetail="true"/>
                     <h1><h:outputText value="Alle Benutzer"/></h1>
                     <p:dataTable value="#{userAdministrationBean.users}" var="item">
                         <p:column>
@@ -56,7 +57,7 @@
                             </f:facet>
                             <h:outputText value="#{item.licencePlateRight}"/><br />
                             <h:outputText value="#{item.fleaMarketRight}"/>
-                            
+
                         </p:column>
                         <p:column>
                             <f:facet name="header">
@@ -98,12 +99,12 @@
                             <f:facet name="header">
                                 <h:outputText value=""/>
                             </f:facet>
-                            
+
                             <p:commandButton value="Löschen" action="#{userAdministrationBean.deleteUser(item)}" update="@form" style="margin: auto;
                                              display: block;">
                                 <p:confirm header="Löschen" message="Wollen Sie den den Benutzer '#{item.prename} #{item.name}' wirklich löschen?" icon="ui-icon-alert"/>
                             </p:commandButton>
-                            
+
                         </p:column>
                         <p:column>
                             <f:facet name="header">
@@ -113,21 +114,15 @@
                                              display: block;"/>
                         </p:column>
                     </p:dataTable>
-                    
-                     <p:confirmDialog global="true" showEffect="explode" hideEffect="puff"  >
+
+                    <p:confirmDialog global="true" showEffect="explode" hideEffect="puff"  >
                         <p:commandButton value="Abbrechen" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
                         <p:commandButton value="Löschen" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
                     </p:confirmDialog>
-                    
+
                 </h:form>
             </f:view>
-           
-            
-            <h:form>
-                <p:commandButton value="Beispielbenutzer einfügen" action="#{userAdministrationBean.addExampleData()}" ajax="false" />
-            </h:form>
-            
-            
+
         </main>
 
     </h:body>

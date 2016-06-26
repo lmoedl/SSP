@@ -11,13 +11,13 @@
     </h:head>
     <h:body>
         <nav>
-              <h:form>
+            <h:form>
                 <p:menubar>
                     <p:menuitem value="Home" outcome="/index" icon="fa fa-fw fa-home"/>
                     <p:menuitem value="Kennzeichen" outcome="/licencePlate" icon="fa fa-fw fa-car" />
                     <p:menuitem value="Flohmarkt" outcome="/fleaMarket" icon="fa fa-fw fa-medium" />
                     <p:submenu label="Admin" icon="fa fa-fw fa-adn" rendered="#{loginBean.admin}">
-                        <p:menuitem value="Kennzeichenreservierung" outcome="/licencePlateReservation"/>
+                        <p:menuitem value="Kennzeichenreservierungen" outcome="/licencePlateReservation"/>
                         <p:submenu label="Flohmarktverwaltung">
                             <p:menuitem value="Standreservierungen" outcome="/fleaMarketReservation" />
                             <p:menuitem value="Flohmarkt erstellen" outcome="/createFleaMarket" />
@@ -26,7 +26,7 @@
                     </p:submenu>
 
                     <p:menuitem value="Login"  outcome="/login" icon="fa fa-fw fa-lock" style="position: absolute; right: 10px" rendered="#{!loginBean.loggedIn}"/>
-                    <p:menuitem value="Logout" icon="fa fa-fw fa-lock" style="position: absolute; right: 10px" actionListener="#{loginBean.logout()}" rendered="#{loginBean.loggedIn}" ajax="false"/>
+                    <p:menuitem value="Logout" icon="fa fa-fw fa-lock" style="position: absolute; right: 10px" action="#{loginBean.logout()}" rendered="#{loginBean.loggedIn}" ajax="false"/>
                 </p:menubar>
             </h:form>
         </nav>
@@ -53,12 +53,12 @@
                             <p:inputText id="letters" value="#{licencePlateBean.letters}" required="true" maxlength="2" style="width: 100px; text-transform: uppercase" requiredMessage="Buchstaben notwendig!" validatorMessage="Buchstaben notwendig!">
                                 <f:validateRegex pattern="[A-Za-z]+"/>
                             </p:inputText>
-                            
+
 
                             <p:inputText id="numbers" value="#{licencePlateBean.numbers}" placeholder="Zahlen eingeben" required="true" maxlength="4" style="width: 150px" validatorMessage="Zahlen notwendig!" requiredMessage="Zahlen notwendig!">
                                 <f:validateDoubleRange minimum="1" maximum="9999"/>
                             </p:inputText>
-                           
+
 
                         </h:panelGrid>
                     </div>
@@ -105,22 +105,22 @@
                             <f:facet name="header">
                                 <h:outputText value=""/>
                             </f:facet>                         
-                            
-                             <p:commandButton value="Löschen" action="#{licencePlateBean.deleteReservation(item)}" update="@form" style="margin: auto;
+
+                            <p:commandButton value="Löschen" action="#{licencePlateBean.deleteReservation(item)}" update="@form" style="margin: auto;
                                              display: block;">
                                 <p:confirm header="Löschen" message="Wollen Sie das Kennzeichen '#{item.city}:#{item.letters}:#{item.numbers}' wirklich löschen?" icon="ui-icon-alert"/>
                             </p:commandButton>
-                            
-                            
-                            
+
+
+
                         </p:column>
                     </p:dataTable>
-                    
+
                     <p:confirmDialog global="true" showEffect="explode" hideEffect="puff"  >
                         <p:commandButton value="Abbrechen" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
                         <p:commandButton value="Löschen" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
                     </p:confirmDialog>
-                    
+
                 </h:form>
             </f:view>
 
