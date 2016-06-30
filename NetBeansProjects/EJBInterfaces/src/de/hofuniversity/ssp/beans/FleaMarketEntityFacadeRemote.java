@@ -40,4 +40,8 @@ public interface FleaMarketEntityFacadeRemote {
     
     int deleteExpiredReservations(Date date);
     
+    int deleteExpiredReservationsOfExpiredFleaMarkets(Date date);
+    
+    List<FleaMarketEntity> findAllReservationsOfFleaMarket(String street);
+    
 }
