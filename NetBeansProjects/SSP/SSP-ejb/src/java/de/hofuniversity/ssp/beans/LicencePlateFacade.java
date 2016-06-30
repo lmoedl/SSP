@@ -5,6 +5,8 @@
  */
 package de.hofuniversity.ssp.beans;
 
+import de.hofuniversity.ssp.entities.CustomerEntity;
+import de.hofuniversity.ssp.entities.CustomerEntity_;
 import de.hofuniversity.ssp.entities.LicencePlateEntity;
 import de.hofuniversity.ssp.entities.LicencePlateEntity_;
 import java.util.Date;
@@ -15,7 +17,11 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaDelete;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Join;
 import javax.persistence.criteria.Root;
+import javax.persistence.criteria.SetJoin;
+import javax.persistence.metamodel.EntityType;
+import javax.persistence.metamodel.Metamodel;
 
 /**
  *
@@ -53,6 +59,10 @@ public class LicencePlateFacade extends AbstractFacade<LicencePlateEntity> imple
         CriteriaQuery cq = builder.createQuery();
         Root<LicencePlateEntity> c = cq.from(LicencePlateEntity.class);
         //Join<LicencePlateEntity, CustomerEntity> join = c.join("join");
+
+        
+        //Join<LicencePlateEntity, CustomerEntity> join = c.join(LicencePlateEntity_.customer_id);
+        
         cq.select(c);
         //cq.where(builder.equal(c.get(LicencePlateEntity_.customer_id), CustomerEntity_.id));
         cq.orderBy(builder.asc(c.get("reservationDate")));

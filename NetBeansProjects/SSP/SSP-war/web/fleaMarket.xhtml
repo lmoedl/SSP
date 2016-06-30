@@ -32,24 +32,26 @@
         </nav>
 
         <main>
+
+
             <h:form>
                 <p:growl id="growl" showDetail="true"/>
-
                 <div style="margin-top: 10px">
                     <p:outputPanel autoUpdate="true" id="dataTableGroup3" binding="#{fleaMarketBean.dataTableGroup1}"/>
                     <p:outputPanel binding="#{fleaMarketBean.dataTableGroup2}" autoUpdate="true"/>
                 </div>
 
+
                 <p:panel style="margin-top: 10px">
                     <h:panelGrid id="grid" columns="5" cellpadding="5">
                         <p:outputLabel for="street" value="Straße"/>
-                        <p:selectOneMenu id="street" value="#{fleaMarketBean.street}" effect="explode">
-
+                        <p:selectOneMenu id="street" value="#{fleaMarketBean.street}" effect="explode" >
                             <f:selectItems value="#{fleaMarketBean.fleaMarkets}"/>
+                            <p:ajax event="valueChange" immediate="true" process="@this" oncomplete="submit()"/>
                         </p:selectOneMenu>
                         <p:outputLabel for="length" value="Länge"/>
                         <p:selectOneMenu id="length" value="#{fleaMarketBean.length}" effect="explode">
-
+                            <f:selectItem itemLabel="- Auswählen -" itemValue="0" />
                             <f:selectItem itemLabel="3 m" itemValue="3" />
                             <f:selectItem itemLabel="4 m" itemValue="4" />
                             <f:selectItem itemLabel="5 m" itemValue="5" />

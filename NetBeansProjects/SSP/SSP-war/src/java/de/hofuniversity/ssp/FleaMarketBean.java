@@ -57,6 +57,13 @@ public class FleaMarketBean implements Serializable {
     }
 
     public String reserve() {
+        
+        if(length == 0){
+            
+            return "";
+        }
+        
+        
         FacesContext context = FacesContext.getCurrentInstance();
 
         if (!loginBean.isLoggedIn()) {
@@ -73,6 +80,7 @@ public class FleaMarketBean implements Serializable {
             entity.setStreet(street);
             entity.setReservationDate(new Date());
             entity.setCustomer_id(loginBean.getCustomer().getId());
+            //entity.setFleaMarketDate(fleaMarketDate);
 
             fleaMarketEntityFacade.create(entity);
             
@@ -91,6 +99,7 @@ public class FleaMarketBean implements Serializable {
         Calendar c = Calendar.getInstance();
         c.add(Calendar.DAY_OF_YEAR, -7);
         fleaMarketEntityFacade.deleteExpiredReservations(c.getTime());
+        //fleaMarketEntityFacade.deleteExpiredReservationsOfExpiredFleaMarkets(new Date());
         return fleaMarketEntityFacade.getReservedFleaMarketsOfCustomer(loginBean.getCustomer().getId());
     }
 
@@ -100,10 +109,11 @@ public class FleaMarketBean implements Serializable {
         return newFleaMarketEntityFacade.findAll();
     }
 
-    public void deleteReservation(FleaMarketEntity entity) {
+    public String deleteReservation(FleaMarketEntity entity) {
         fleaMarketEntityFacade.remove(entity);
         FacesContext context = FacesContext.getCurrentInstance();
         context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Erfolgreich", "Der Flohmarktstand mit der Länge " + entity.getStandLength() + " Meter in der Straße \"" + entity.getStreet() + "\" wurde erfolgreich gelöscht!"));
+        return "fleaMarket";
     }
 
     public String getStreet() {
@@ -163,15 +173,12 @@ public class FleaMarketBean implements Serializable {
 
         int reservedLengt = getReservedLength();
         
-        for (int i = 0; i <= 50; i++) {
+        for (int i = 0; i < 50; i++) {
             HtmlColumn column = new HtmlColumn();
             dataTable.getChildren().add(column);
           
-            
-            
-
             HtmlOutputText idHeader = new HtmlOutputText();
-            idHeader.setValue("ID");
+            idHeader.setValue("---");
             if(i < reservedLengt){
             idHeader.setStyleClass("reservedStand");
             }else{
@@ -196,15 +203,12 @@ public class FleaMarketBean implements Serializable {
             reservedLength = l - 50;
         }
         
-        for (int i = 0; i <= 50; i++) {
+        for (int i = 0; i < 50; i++) {
             HtmlColumn column = new HtmlColumn();
             dataTable.getChildren().add(column);
-          
-            
-            
 
             HtmlOutputText idHeader = new HtmlOutputText();
-            idHeader.setValue("ID");
+            idHeader.setValue("---");
             if(i < reservedLength){
             idHeader.setStyleClass("reservedStand");
             }else{
@@ -219,8 +223,18 @@ public class FleaMarketBean implements Serializable {
         dataTableGroup2.getChildren().add(dataTable);
     }
     
+    
+    
+    
     private int getReservedLength(){
-        List<FleaMarketEntity> list = fleaMarketEntityFacade.findAll();
+        String street2 = null;
+        if(street == null){
+            street2 = newFleaMarketEntityFacade.findAll().get(0).toString();
+        }else{
+            street2 = street;
+        }
+        
+        List<FleaMarketEntity> list = fleaMarketEntityFacade.findAllReservationsOfFleaMarket(street2);
         
         int reservedLength = 0;
         

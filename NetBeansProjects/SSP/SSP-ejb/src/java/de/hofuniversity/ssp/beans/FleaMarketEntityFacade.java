@@ -6,6 +6,7 @@
 package de.hofuniversity.ssp.beans;
 
 import de.hofuniversity.ssp.entities.FleaMarketEntity;
+import de.hofuniversity.ssp.entities.FleaMarketEntity_;
 import de.hofuniversity.ssp.entities.LicencePlateEntity;
 import java.util.Date;
 import java.util.List;
@@ -83,10 +84,11 @@ public class FleaMarketEntityFacade extends AbstractFacade<FleaMarketEntity> imp
         for (int i = 0; i < list.size(); i++) {
             FleaMarketEntity entity = list.get(i);
             resultLength += entity.getStandLength();
+            System.out.println(entity.toString());
 
         }
 
-        return streetLength > resultLength + length;
+        return streetLength >= resultLength + length;
     }
 
     /**
@@ -94,7 +96,7 @@ public class FleaMarketEntityFacade extends AbstractFacade<FleaMarketEntity> imp
      * @return
      */
     @Override
-    public List<FleaMarketEntity> findAllOrdered(){
+    public List<FleaMarketEntity> findAllOrdered() {
         CriteriaBuilder builder = getEntityManager().getCriteriaBuilder();
         CriteriaQuery cq = builder.createQuery();
         Root<FleaMarketEntity> c = cq.from(FleaMarketEntity.class);
@@ -102,7 +104,17 @@ public class FleaMarketEntityFacade extends AbstractFacade<FleaMarketEntity> imp
         cq.orderBy(builder.asc(c.get("reservationDate")));
         return getEntityManager().createQuery(cq).getResultList();
     }
-    
+
+    @Override
+    public List<FleaMarketEntity> findAllReservationsOfFleaMarket(String street) {
+        CriteriaBuilder builder = getEntityManager().getCriteriaBuilder();
+        CriteriaQuery cq = builder.createQuery();
+        Root<FleaMarketEntity> c = cq.from(FleaMarketEntity.class);
+        cq.select(c);
+        cq.where(builder.equal(c.get("street"), street));
+        return getEntityManager().createQuery(cq).getResultList();
+    }
+
     /**
      *
      * @param date
@@ -113,8 +125,18 @@ public class FleaMarketEntityFacade extends AbstractFacade<FleaMarketEntity> imp
         CriteriaBuilder builder = getEntityManager().getCriteriaBuilder();
         CriteriaDelete cq = builder.createCriteriaDelete(FleaMarketEntity.class);
         Root<FleaMarketEntity> c = cq.from(FleaMarketEntity.class);
-        
-        cq.where(builder.lessThan(c.get("reservationDate"), date));
+
+        cq.where(builder.lessThan(c.get(FleaMarketEntity_.reservationDate), date));
+        return getEntityManager().createQuery(cq).executeUpdate();
+    }
+
+    @Override
+    public int deleteExpiredReservationsOfExpiredFleaMarkets(Date date) {
+        CriteriaBuilder builder = getEntityManager().getCriteriaBuilder();
+        CriteriaDelete cq = builder.createCriteriaDelete(FleaMarketEntity.class);
+        Root<FleaMarketEntity> c = cq.from(FleaMarketEntity.class);
+
+        cq.where(builder.lessThanOrEqualTo(c.get(FleaMarketEntity_.fleaMarketDate), date));
         return getEntityManager().createQuery(cq).executeUpdate();
     }
 }

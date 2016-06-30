@@ -132,7 +132,7 @@ public class IndexBean {
         entity2.setLetters("BB");
         entity2.setNumbers(121);
 
-        Calendar c = Calendar.getInstance(TimeZone.getTimeZone("MET"), Locale.GERMAN);
+        Calendar c = Calendar.getInstance(Locale.GERMAN);
         c.set(2016, 8, 8);
 
         entity2.setReservationDate(c.getTime());
@@ -157,7 +157,7 @@ public class IndexBean {
         entity1.setStreet("Enoch-Widman-Straße");
         entity1.setId(1l);
 
-        Calendar c = Calendar.getInstance(TimeZone.getTimeZone("MET"), Locale.GERMAN);
+        Calendar c = Calendar.getInstance(Locale.GERMAN);
         c.set(2016, 8, 28);
 
         entity1.setFleaMarketDate(c.getTime());
@@ -169,7 +169,7 @@ public class IndexBean {
         entity2.setStreet("Königsstraße");
         entity2.setId(2l);
 
-        Calendar c2 = Calendar.getInstance(TimeZone.getTimeZone("MET"), Locale.GERMAN);
+        Calendar c2 = Calendar.getInstance(Locale.GERMAN);
         c2.set(2016, 8, 28);
 
         entity2.setFleaMarketDate(c2.getTime());
@@ -182,7 +182,7 @@ public class IndexBean {
         FleaMarketEntity entity1 = new FleaMarketEntity();
         entity1.setActive(true);
         entity1.setCustomer_id(1);
-        Calendar c2 = Calendar.getInstance(TimeZone.getTimeZone("MET"), Locale.GERMAN);
+        Calendar c2 = Calendar.getInstance(Locale.GERMAN);
         c2.set(2016, 8, 28);
         entity1.setFleaMarketDate(c2.getTime());
         entity1.setReservationDate(new Date());
@@ -194,7 +194,7 @@ public class IndexBean {
         FleaMarketEntity entity2 = new FleaMarketEntity();
         entity2.setActive(false);
         entity2.setCustomer_id(1);
-        Calendar c = Calendar.getInstance(TimeZone.getTimeZone("MET"), Locale.GERMAN);
+        Calendar c = Calendar.getInstance(Locale.GERMAN);
         c.set(2016, 8, 28);
         entity2.setFleaMarketDate(c.getTime());
         entity2.setReservationDate(new Date());
